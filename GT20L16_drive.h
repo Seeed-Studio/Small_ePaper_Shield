@@ -1,5 +1,5 @@
 /*
-  ePaperDfs.h
+  GT20L16_drive.h
   2013 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Modified by Loovee
@@ -26,33 +26,31 @@
   normal and all of the individual display stages be clearly visible.
 */
 
-#ifndef __EPAPERDFS_H__
-#define __EPAPERDFS_H__
+#ifndef __GT20L16_DRIVE_H__
+#define __GT20L16_DRIVE_H__
 
-// pin define
-#define Pin_TEMPERATURE   A0
-#define Pin_PANEL_ON      2
-#define Pin_BORDER        3
-#define Pin_DISCHARGE     8
-#define Pin_PWM           5
-#define Pin_RESET         6
-#define Pin_BUSY          7
-#define Pin_EPD_CS        10
+#define PIN_GT20L16_CS      9
 
-#define Pin_SD_CS         4
+class GT20L16_drive{
 
-#define Pin_OE123         A1
-#define Pin_STV_IN        A3
+private:
 
-// spi cs
+    int pinCS;
 
-#define EPD_SELECT()        digitalWrite(Pin_EPD_CS, LOW)
-#define EPD_UNSELECT()      digitalWrite(Pin_EPD_CS, HIGH)
-#define SD_SELECT()         digitalWrite(Pin_SD_CS, LOW) 
-#define SD_UNSELECT()       digitalWrite(Pin_SD_CS, HIGH)
-#define FONT_SELECT()       digitalWrite(Pin_Font_CS, LOW) 
-#define FONT_UNSELECT()     digitalWrite(Pin_Font_CS, HIGH)
+private:
 
+    void GT_Select();
+    void GT_UnSelect();
+    unsigned long getAddrFromUnicode(unsigned int uniCode);
+    unsigned long GTRead(unsigned long Address);
+public:
+
+    void begin(int pinSelect);
+    int getMatrixUnicode(unsigned int uniCode, unsigned char *matrix);
+
+};
+
+extern GT20L16_drive GT20L16;
 
 #endif
 

@@ -54,7 +54,6 @@ void ePaper::init_io()
     pinMode(Pin_BORDER, OUTPUT);
     pinMode(Pin_EPD_CS, OUTPUT);
     pinMode(Pin_SD_CS, OUTPUT);
-    pinMode(Pin_Font_CS, OUTPUT);
 
     digitalWrite(Pin_RESET, LOW);
     digitalWrite(Pin_PANEL_ON, LOW);
@@ -62,7 +61,6 @@ void ePaper::init_io()
     digitalWrite(Pin_BORDER, LOW);
     digitalWrite(Pin_EPD_CS, LOW);
     digitalWrite(Pin_SD_CS, HIGH);
-    digitalWrite(Pin_Font_CS, HIGH);
     
     // init SPI
     SPI.begin();
