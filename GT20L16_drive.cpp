@@ -52,27 +52,42 @@ int GT20L16_drive::getMatrixUnicode(unsigned int uniCode, unsigned char *matrix)
     unsigned char tempdata;
     unsigned long Add=0;
     
+    unsigned char dtaLen = 0;
+    
+    if(uniCode <= 45632 )
+    {
+        dtaLen = 16;
+    }
+    else
+    {
+        dtaLen = 32;
+    }
+
     Add=getAddrFromUnicode(uniCode);
     
     delayMicroseconds(10);
-    
     GT_Select();
     SPI.transfer(0x03);
     SPI.transfer(Add>>16);
     SPI.transfer(Add>>8);
     SPI.transfer(Add);
-    
-    
+
+
     SPI.setBitOrder(LSBFIRST);
-    for(i=0;i<32;i++)
-   {
-      
-      tempdata=SPI.transfer(0x00);
-      matrix[i]=(255-tempdata);   /*save dot matrix data in matrixdata[i]*/
-      delay(10);
+
+
+    for(i=0;i<dtaLen;i++)
+    {
+
+        tempdata=SPI.transfer(0x00);
+        matrix[i]=(tempdata);   /*save dot matrix data in matrixdata[i]*/
+        delay(10);
     }
     SPI.setBitOrder(MSBFIRST);
-    GT_UnSelect();   
+    GT_UnSelect();
+    
+    
+    return dtaLen;
 }
 
 /*********************************************************************************************************
@@ -95,50 +110,84 @@ void GT20L16_drive::GT_UnSelect()
 
 /*********************************************************************************************************
 ** Function name:           getAddrFromUnicode
-** Descriptions:            get .. address 
+** Descriptions:            get .. address
 *********************************************************************************************************/
 unsigned long GT20L16_drive::getAddrFromUnicode(unsigned int uniCode)
 {
 
-    unsigned long  ZFAdd,HZAdd;
-    unsigned char  MSB,LSB;
-    unsigned long ChineseTab;
-    unsigned int data;
-    unsigned long  Add_Chinese;
-    MSB = uniCode>>8;
-    LSB = uniCode;
-    ZFAdd=36224;
-    HZAdd=93452;
-    ChineseTab=87436;
-    
-    if(MSB>=0xA1&&MSB<=0xA5)  //char area
+    if (uniCode <= 45632)   // char
     {
-      if(MSB==0xA1&&LSB>=0xA1&&LSB<=0xBF)
-        Add_Chinese=32*(LSB-0xA1)+ZFAdd;
-      else if(MSB==0xA3&&LSB>=0xA1&&LSB<=0xFE)
-        Add_Chinese=32*(31+LSB-0xA1)+ZFAdd;
-      else if(MSB==0xA4&&LSB>=0xA1&&LSB<=0xF3)
-        Add_Chinese=32*(125+LSB-0xA1)+ZFAdd;
-      else if(MSB==0xA5&&LSB>=0xA1&&LSB<=0xF6)
-        Add_Chinese=32*(208+LSB-0xA1)+ZFAdd;
-      else
-        Add_Chinese=ZFAdd;
+        unsigned int BaseAdd=0;
+        unsigned long Address;
+        if(uniCode>=0x20&&uniCode<=0x7f)
+        Address=16*(uniCode-0x20)+BaseAdd;
+        else if(uniCode>=0xa0&&uniCode<=0xff)
+        Address=16*(96+uniCode-0xa0)+BaseAdd;
+        else if(uniCode>=0x100&&uniCode<=0x17f)
+        Address=16*(192+uniCode-0x100)+BaseAdd;
+        else if(uniCode>=0x1a0&&uniCode<=0x1cf)
+        Address=16*(320+uniCode-0x1a0)+BaseAdd;
+        else if(uniCode>=0x1f0&&uniCode<=0x1ff)
+        Address=16*(368+uniCode-0x1f0)+BaseAdd;
+        else if(uniCode>=0x210&&uniCode<=0x21f)
+        Address=16*(384+uniCode-0x210)+BaseAdd;
+        else if(uniCode>=0x1ea0&&uniCode<=0x1eff)
+        Address=16*(400+uniCode-0x1ea0)+BaseAdd;
+        else if(uniCode>=0x370&&uniCode<=0x3cf)
+        Address=16*(496+uniCode-0x370)+BaseAdd;
+        else if(uniCode>=0x400&&uniCode<=0x45f)
+        Address=16*(592+uniCode-0x400)+BaseAdd;
+        else if(uniCode>=0x490&&uniCode<=0x4ff)
+        Address=16*(688+uniCode-0x490)+BaseAdd;
+        else if(uniCode>=0x590&&uniCode<=0x5ff)
+        Address=16*(800+uniCode-0x100)+BaseAdd;
+        else if(uniCode>=0xe00&&uniCode<=0xe7f)
+        Address=16*(912+uniCode-0xe00)+BaseAdd;
+        else  Address=BaseAdd;
+        return Address;
     }
-    else if((MSB>=0xB0&&MSB<=0xD7)&&(LSB>=0xA1&&LSB<=0xFE)) //chinese 5720
-    
-    { 
-        Add_Chinese=(MSB-176)*94+(LSB-161)+1;
-        Add_Chinese=Add_Chinese*32 +HZAdd;
-        
-    }
-    else if((MSB>=0xD8&&MSB<=0xF7)&&(LSB>=0xA1&&LSB<=0xFE)) //chinese 5720~6763
+    else
     {
-       Add_Chinese=(MSB-0xD8)*94+(LSB-0xA1);
-       Add_Chinese=Add_Chinese*2+ChineseTab;
-       data=GTRead(Add_Chinese);
-       Add_Chinese=32*data+HZAdd;
+        unsigned long  ZFAdd,HZAdd;
+        unsigned char  MSB,LSB;
+        unsigned long ChineseTab;
+        unsigned int data;
+        unsigned long  Add_Chinese;
+        MSB = uniCode>>8;
+        LSB = uniCode;
+        ZFAdd=36224;
+        HZAdd=93452;
+        ChineseTab=87436;
+
+        if(MSB>=0xA1&&MSB<=0xA5)  //char area
+        {
+            if(MSB==0xA1&&LSB>=0xA1&&LSB<=0xBF)
+            Add_Chinese=32*(LSB-0xA1)+ZFAdd;
+            else if(MSB==0xA3&&LSB>=0xA1&&LSB<=0xFE)
+            Add_Chinese=32*(31+LSB-0xA1)+ZFAdd;
+            else if(MSB==0xA4&&LSB>=0xA1&&LSB<=0xF3)
+            Add_Chinese=32*(125+LSB-0xA1)+ZFAdd;
+            else if(MSB==0xA5&&LSB>=0xA1&&LSB<=0xF6)
+            Add_Chinese=32*(208+LSB-0xA1)+ZFAdd;
+            else
+            Add_Chinese=ZFAdd;
+        }
+        else if((MSB>=0xB0&&MSB<=0xD7)&&(LSB>=0xA1&&LSB<=0xFE)) //chinese 5720
+
+        {
+            Add_Chinese=(MSB-176)*94+(LSB-161)+1;
+            Add_Chinese=Add_Chinese*32 +HZAdd;
+
+        }
+        else if((MSB>=0xD8&&MSB<=0xF7)&&(LSB>=0xA1&&LSB<=0xFE)) //chinese 5720~6763
+        {
+            Add_Chinese=(MSB-0xD8)*94+(LSB-0xA1);
+            Add_Chinese=Add_Chinese*2+ChineseTab;
+            data=GTRead(Add_Chinese);
+            Add_Chinese=32*data+HZAdd;
+        }
+        return Add_Chinese;
     }
-    return Add_Chinese;
 }
 
 
@@ -147,7 +196,7 @@ unsigned long GT20L16_drive::getAddrFromUnicode(unsigned int uniCode)
 ** Descriptions:            GTRead
 *********************************************************************************************************/
 unsigned long GT20L16_drive::GTRead(unsigned long Address)
-{    
+{
     unsigned char i;
     unsigned char buffer[2]={0};
     unsigned int data;
@@ -159,11 +208,10 @@ unsigned long GT20L16_drive::GTRead(unsigned long Address)
     SPI.transfer(Address);
     for(i=0;i<2;i++)
     {
-      buffer[i]=SPI.transfer(0x00);
+        buffer[i]=SPI.transfer(0x00);
     }
     GT_UnSelect();
     data=buffer[0]*256+buffer[1];
-    delay(1000);
     return data;
 }
 

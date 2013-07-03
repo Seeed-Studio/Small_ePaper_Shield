@@ -18,60 +18,30 @@ void setup()
     EPAPER.init_io();
     GT20L16.begin(PINCSGT);
 
-    cout << "get matrix over!" << endl;
+    int dtaLen = GT20L16.getMatrixUnicode('S', matrix);
     
-    GT20L16.getMatrixUnicode('ΰ', matrix);
-  
-    for(int i=0; i<32; i++)
-    {
-        cout << matrix[i] << '\t';
-        if((i+1)%16 == 0)cout << endl;
-    }
-    
-    cout << endl << endl << endl;
-      
-    
-    for(int i=0; i<8; i++)
-    {
-        for(int j=0; j<16; j++)
-        {
+    cout << "dtaLen = " << dtaLen << endl;
 
-            if(matrix[j] & (0x01<<(7-i)))
-            {
-                cout << "  ";
-                //myFile.print("  ");
-            }
-            else
-            {
-                cout << "**";
-                //myFile.print("**");
-            }
-        }
-        
-        cout << endl;
-        //myFile.println();
-    }
-    
-    for(int i=0; i<8; i++)
+    for(int k = 0; k<2; k++)
     {
-        for(int j=0; j<16; j++)
+        for(int i=0; i<8; i++)
         {
+            for(int j=0; j<(dtaLen/2); j++)
+            {
 
-            if(matrix[j+16] & (0x01<<(7-i)))
-            {
-                cout << "  ";
-                //myFile.print("  ");
+                if(matrix[j+(dtaLen/2)*k] & (0x01<<(7-i)))
+                {
+                    cout << "**";
+                }
+                else
+                {
+                    cout << "  ";
+                }
             }
-            else
-            {
-                cout << "**";
-                //myFile.print("**");
-            }
+            cout << endl;
         }
-        
-        cout << endl;
-        //myFile.println();
     }
+
     
     cout << endl;
 
