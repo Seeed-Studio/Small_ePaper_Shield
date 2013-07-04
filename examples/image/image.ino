@@ -114,8 +114,8 @@ void allPixel()
     for(int i=0; i<96; i++)
     {
         dtaPixel_init();
-        for(int j=0; j<5; j++)
-        EPD.lineLvc(i, dtaPixel, 0, 0, EPD_normal);
+       // for(int j=0; j<5; j++)
+       // EPD.lineLvc(i, dtaPixel, 0, 0, EPD_normal);
     }
     
     EPD.end();
@@ -127,8 +127,10 @@ void setup()
 {
 
     Serial.begin(115200);
-  //  init_epd();
-    
+    init_epd();
+    EPD.clear();
+    EPD.end();
+    delay(1000);
     cout << "init over!!" << endl;
 }
 
@@ -146,6 +148,14 @@ void loop()
 
     init_epd();
     
+    EPD.image(TEXT_BITS);
+    
+    delay(100);
+    //EPD.end();
+    delay(100);
+    while(1);
+    
+#if 0
   //  EPD.image(image_array_200_1);
   
   	switch(state) {
@@ -178,6 +188,6 @@ void loop()
     cout << "clear over!" << endl;
     
    // while(1);
-
+#endif
 
 }
