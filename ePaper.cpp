@@ -66,7 +66,7 @@ void ePaper::init_io()
     SPI.begin();
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
-    SPI.setClockDivider(SPI_CLOCK_DIV4);
+    //SPI.setClockDivider(SPI_CLOCK_DIV4);
 }
 
 /*********************************************************************************************************

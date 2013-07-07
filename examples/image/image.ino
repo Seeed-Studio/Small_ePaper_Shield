@@ -5,9 +5,11 @@
 #include <SPI.h>
 #include <EPD.h>
 #include <Streaming.h>
+#include <SD.h>
 
 #include "picture.h"
 #include "ePaper.h"
+#include "sd_epaper.h"
 
 // supported sizes: 144 20 27
 #define SCREEN_SIZE 20 // 144 20 27
@@ -85,7 +87,7 @@ void init_epd()
 
     for(int i=0; i<25; i++)
     {
-        EPD.lineDta[i] = 0xf0;
+        EPD.lineDta[i] = 0x00;
     }
     EPAPER.init_io();
     EPD.begin();                 // power up the EPD panel
@@ -130,6 +132,8 @@ void allPixel()
 void setup()
 {
     Serial.begin(115200);
+    EPAPER.init_io();
+    eSD.begin(4);
     delay(100);
     cout << "init over!!" << endl;
 }
