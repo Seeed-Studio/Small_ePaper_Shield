@@ -82,7 +82,11 @@ void init_epd()
     int temp = EPAPER.getTemperature();
     cout << "temperature: " << temp << endl;
     delay(100);
-    
+
+    for(int i=0; i<25; i++)
+    {
+        EPD.lineDta[i] = 0xf0;
+    }
     EPAPER.init_io();
     EPD.begin();                 // power up the EPD panel
     EPD.setFactor(temp);         // adjust for current temperature
@@ -125,12 +129,8 @@ void allPixel()
 }
 void setup()
 {
-
     Serial.begin(115200);
-    init_epd();
-    EPD.clear();
-    EPD.end();
-    delay(1000);
+    delay(100);
     cout << "init over!!" << endl;
 }
 
@@ -139,26 +139,31 @@ static int state = 0;
 void loop() 
 {
 
-    cout << "wait for clear" << endl << endl;
-   // EPD.clear();
-   // EPD.end();
-    //allPixel();
-  
+   // cout << "wait for clear" << endl << endl;
+   
+   for(int i = 0; i<1; i++)
+   {
+       init_epd();
+       EPD.clear();
+       EPD.end();
+        //allPixel();
+        delay(100);
+   }
    // delay(5000);
 
     init_epd();
+
+    //EPD.image(image_array_200_1);
     
-    EPD.image(TEXT_BITS);
-    
-    delay(100);
-    //EPD.end();
-    delay(100);
+    EPD.image_lvc();
+    EPD.end();
     while(1);
     
-#if 0
+#if 1
   //  EPD.image(image_array_200_1);
   
-  	switch(state) {
+  	switch(state) 
+    {
 	default:
 	case 0:         // clear the screen
 		EPD.clear();
@@ -180,9 +185,9 @@ void loop()
 		state = 1;  // backe to picture nex time
 		break;
 	}
-	EPD.end();   // power down the EPD panel
+	//EPD.end();   // power down the EPD panel
 
-    delay(100);
+    delay(1000);
    // EPD.end();
 
     cout << "clear over!" << endl;
