@@ -38,12 +38,20 @@
 *********************************************************************************************************/
 unsigned char sd_epaper::begin(unsigned char pinCs)
 {
-    if (!SD.begin(4))
+
+    openFileTime = 1;
+    closeFileTime = 1;
+    
+    while(!SD.begin(4))
     {
         Serial.println("initialization failed!");
-        while(1);
+        delay(100);
     }
+    
     Serial.println("initialization done.");
+    
+    openFile();
+    
     clear();
 
 }
@@ -51,12 +59,15 @@ unsigned char sd_epaper::begin(unsigned char pinCs)
 unsigned char sd_epaper::openFile()
 {
     new_image = SD.open(NEWIMAGENAME, FILE_WRITE);
-    if(new_image)cout << "new_image open ok" << endl;
-    else cout << "new_image_open err" << endl;
+    if(new_image)cout << "new_image open ok: " << openFileTime++ << endl;
+    else cout << "new_image_open err: " << openFileTime++ << endl;
+
 }
+
 unsigned char sd_epaper::closeFile()
 {
     new_image.close();
+    cout << "new_image close : " << closeFileTime++ << endl;
 }
 
 /*********************************************************************************************************
@@ -143,7 +154,7 @@ unsigned char sd_epaper::getPixel(int x, int y)
 unsigned char sd_epaper::clear()
 {
 
-    openFile();
+    //openFile();
     new_image.seek(0);
     memset(lineDta, 0x00, 25);
 
@@ -151,7 +162,7 @@ unsigned char sd_epaper::clear()
     {
         new_image.write(lineDta, 25);
     }
-    closeFile();
+    //closeFile();
 }
 
 

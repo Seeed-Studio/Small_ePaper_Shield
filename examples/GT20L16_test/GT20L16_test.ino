@@ -3,9 +3,9 @@
 #include <Streaming.h>
 #include <ePaper.h>
 #include <SPI.h>
+#include <SD.h>
 
 #include "GT20L16_drive.h"
-
 
 #define PINCSGT         9
 
@@ -26,6 +26,8 @@ void dispMatrix(int len, unsigned char *Matrix)
                     //Serial.print("**");
                     Serial.write(random('A', 'Z'));         // dandom...fuck
                     Serial.write(random('A', 'Z'));         // ...
+                    
+                    
                 }
                 else
                 {

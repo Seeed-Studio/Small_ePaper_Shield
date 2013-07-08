@@ -239,8 +239,9 @@ void EPD_Class::start() {
 }
 
 
-void EPD_Class::end() {
-
+void EPD_Class::end() 
+{
+#if 0
 	this->frame_fixed(0x55, EPD_normal); // dummy frame
 	this->line(0x7fffu, 0, 0x55, false, EPD_normal); // dummy_line
 
@@ -316,7 +317,7 @@ void EPD_Class::end() {
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x00), 2);
-
+#endif
 	// turn of power and all signals
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
@@ -382,10 +383,7 @@ void EPD_Class::frame_data_sd(EPD_stage stage)
 {
 	for (uint8_t line = 0; line < this->lines_per_display ; ++line) 
     {
-        // read lineDta from sd card, add code here
-        
         eSD.getLine(line, lineDta);
-        
 		this->line(line, lineDta, 0, 0, stage);
 	}
 }
@@ -457,7 +455,6 @@ void EPD_Class::frame_data_repeat_sd(EPD_stage stage)
 
     for(int i=0; i<5; i++)
     {
-	//do {
 		unsigned long t_start = millis();
 		this->frame_data_sd(stage);
 		unsigned long t_end = millis();
@@ -466,7 +463,6 @@ void EPD_Class::frame_data_repeat_sd(EPD_stage stage)
 		} else {
 			stage_time -= t_start - t_end + 1 + ULONG_MAX;
 		}
-	//} while (stage_time > 0);
     }
 }
 

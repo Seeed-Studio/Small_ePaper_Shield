@@ -47,6 +47,9 @@ private:
     File old_image;
     File new_image;
     
+    int openFileTime;
+    int closeFileTime;
+    
 public:
 
     unsigned char begin(unsigned char pinCs);

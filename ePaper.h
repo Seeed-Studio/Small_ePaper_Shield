@@ -42,6 +42,8 @@ class ePaper
 private:
 
     int getTemperature();                   // get temperature
+    unsigned char tMatrix[32];
+    
     
 public:
 
@@ -62,10 +64,20 @@ public:
 		eSD.putPixel(x, y, color);
 	}
     
-    void drawChar(char c, unsigned char x, unsigned char y);
+    unsigned char drawChar(char c, unsigned char x, unsigned char y);
+    unsigned char drawString(char *string, int poX, int poY);
+    unsigned char drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y);
+    unsigned char drawNumber(long long_num,int poX, int poY);
+    unsigned char drawFloat(float floatNumber,unsigned char decimal,unsigned int poX, unsigned int poY);
     
-    void drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y);
-    
+    unsigned char drawLine(int x0, int y0, int x1, int y1);
+    unsigned char drawCircle(int poX, int poY, int r);
+    unsigned char drawHorizontalLine( int poX, int poY, int len);
+    unsigned char drawVerticalLine( int poX, int poY, int len);
+    unsigned char drawRectangle(int poX, int poY, int len, int width);
+    unsigned char fillRectangle(int poX, int poY, int len, int width);
+    unsigned char fillCircle(int poX, int poY, int r);
+    unsigned char drawTraingle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
 };
 
 extern ePaper EPAPER;
