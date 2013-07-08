@@ -89,7 +89,6 @@ void loop()
     
     eSD.openFile();
 
-
 #if 1
 	char temp[sizeof("-999 C")];
 	snprintf(temp, sizeof(temp), "%4d C", temperature);

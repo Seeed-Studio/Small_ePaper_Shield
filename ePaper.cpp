@@ -35,9 +35,30 @@
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
-void ePaper::begin()
+void ePaper::begin(EPD_size sz)
 {
+    size = sz;
+    EPD.begin(size);
     init_io();
+}
+
+/*********************************************************************************************************
+** Function name:           start
+** Descriptions:            start
+*********************************************************************************************************/
+void ePaper::start()
+{
+    EPD.start();                 // power up the EPD panel
+    EPD.setFactor(getTemperature());         // adjust for current temperature
+}
+
+/*********************************************************************************************************
+** Function name:           end
+** Descriptions:            end
+*********************************************************************************************************/
+void ePaper::end()
+{
+
 }
 
 /*********************************************************************************************************
@@ -85,6 +106,30 @@ int ePaper::getTemperature()
     float temp = 209.56-121.7*(float(sum)/1023.0*5.0);
 
     return (int)temp;
+}
+
+/*********************************************************************************************************
+** Function name:           init_io
+** Descriptions:            init IO
+*********************************************************************************************************/
+void ePaper::drawChar(char c, unsigned char x, unsigned char y)
+{
+    
+}
+
+/*********************************************************************************************************
+** Function name:           init_io
+** Descriptions:            init IO
+*********************************************************************************************************/
+void ePaper::drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y)
+{
+    
+}
+
+
+unsigned char ePaper::display()
+{
+    EPD.image_sd();
 }
 
 ePaper EPAPER;

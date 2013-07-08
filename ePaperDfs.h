@@ -30,6 +30,7 @@
 #define __EPAPERDFS_H__
 
 // pin define
+
 #define Pin_TEMPERATURE   A0
 #define Pin_PANEL_ON      2
 #define Pin_BORDER        3

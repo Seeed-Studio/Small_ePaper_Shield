@@ -29,19 +29,43 @@
 #ifndef __EPAPER_H__
 #define __EPAPER_H__
 
+#include <SD.h>
+#include <SPI.h>
+#include <EPD.h>
+
+#include "sd_epaper.h"
 #include "ePaperDfs.h"
 
 class ePaper
 {
+
 private:
 
+    int getTemperature();                   // get temperature
+    
 public:
 
-    void begin();
+    EPD_size size;
+
+    void begin(EPD_size sz);
+    
+    void start();
+    
+    void end();
+    
     void init_io();
     
-    int getTemperature();                   // get temperature
-
+    unsigned char display();                // refresh 
+    
+    void drawPixel(unsigned char x, unsigned char y, unsigned char color)
+    {
+		eSD.putPixel(x, y, color);
+	}
+    
+    void drawChar(char c, unsigned char x, unsigned char y);
+    
+    void drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y);
+    
 };
 
 extern ePaper EPAPER;

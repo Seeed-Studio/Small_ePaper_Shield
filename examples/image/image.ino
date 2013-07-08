@@ -53,34 +53,9 @@
 // Add Images library to compiler path
 #include <Images.h>  // this is just an empty file
 
-// images
-PROGMEM const
-#define unsigned
-#define char uint8_t
-#include TEXT_IMAGE
-#undef char
-#undef unsigned
-
-PROGMEM const
-#define unsigned
-#define char uint8_t
-#include PICTURE
-#undef char
-#undef unsigned
-
-// pre-processor convert to string
-#define MAKE_STRING1(X) #X
-#define MAKE_STRING(X) MAKE_STRING1(X)
-
-// define the E-Ink display
-EPD_Class EPD(EPD_SIZE, Pin_PANEL_ON, Pin_BORDER, Pin_DISCHARGE, Pin_PWM, Pin_RESET, Pin_BUSY, Pin_EPD_CS, SPI);
-
 void init_epd()
 {
-    Serial.println("Demo version: " DEMO_VERSION);
-    Serial.println("Display: " MAKE_STRING(EPD_SIZE));
-    Serial.println();
-    
+
     int temp = EPAPER.getTemperature();
     cout << "temperature: " << temp << endl;
     delay(100);
@@ -90,7 +65,7 @@ void init_epd()
         EPD.lineDta[i] = 0x00;
     }
     EPAPER.init_io();
-    EPD.begin();                 // power up the EPD panel
+    EPD.start();                 // power up the EPD panel
     EPD.setFactor(temp);         // adjust for current temperature
 }
 
@@ -135,6 +110,7 @@ void setup()
     EPAPER.init_io();
     eSD.begin(4);
     delay(100);
+    EPD.begin(EPD_SIZE);
     cout << "init over!!" << endl;
 }
 
@@ -149,21 +125,19 @@ void loop()
    {
        init_epd();
        EPD.clear();
-       EPD.end();
+       //EPD.end();
         //allPixel();
         delay(100);
    }
    // delay(5000);
 
-    init_epd();
+   // init_epd();
 
-    //EPD.image(image_array_200_1);
-    
-    EPD.image_lvc();
-    EPD.end();
+    //EPD.image()
+   // EPD.end();
     while(1);
     
-#if 1
+#if 0
   //  EPD.image(image_array_200_1);
   
   	switch(state) 

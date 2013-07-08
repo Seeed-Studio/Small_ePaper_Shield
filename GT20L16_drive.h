@@ -48,6 +48,7 @@ public:
     void begin(int pinSelect);
     int getMatrixUnicode(unsigned int uniCode, unsigned char *matrix);
 
+
 };
 
 extern GT20L16_drive GT20L16;
