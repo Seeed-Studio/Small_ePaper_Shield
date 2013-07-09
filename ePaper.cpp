@@ -38,6 +38,29 @@
 void ePaper::begin(EPD_size sz)
 {
     size = sz;
+
+    switch(size)
+    {
+        case EPD_1_44:              // 128*96
+        SIZE_LEN    = 128;
+        SIZE_WIDTH  = 96;
+        break;
+        
+        case EPD_2_0:               // 200*96
+        SIZE_LEN    = 200;
+        SIZE_WIDTH  = 96;
+        break;
+        
+        case EPD_2_7:               // 264*176
+        SIZE_LEN    = 264;
+        SIZE_WIDTH  = 176;
+        break;
+        
+        default:
+        println_ep("wrong size");
+        while(1);                   // die here
+    }
+    
     EPD.begin(size);
     init_io();
 }

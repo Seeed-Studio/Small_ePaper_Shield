@@ -32,15 +32,40 @@
 #include "sd_epaper.h"
 #include "ePaperDfs.h"
 
+
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
-unsigned char sd_epaper::begin(unsigned char pinCs)
+unsigned char sd_epaper::begin(unsigned char pinCs, EPD_size sz)
 {
 
     openFileTime = 1;
     closeFileTime = 1;
+    
+    switch(sz)
+    {
+        case EPD_1_44:              // 128*96
+        SIZE_LEN    = 128;
+        SIZE_WIDTH  = 96;
+        break;
+        
+        case EPD_2_0:               // 200*96
+        SIZE_LEN    = 200;
+        SIZE_WIDTH  = 96;
+        break;
+        
+        case EPD_2_7:               // 264*176
+        SIZE_LEN    = 264;
+        SIZE_WIDTH  = 176;
+        break;
+        
+        default:
+        println_sd("wrong size");
+        while(1);                   // die here
+    }
+    
+    LINE_BYTE = SIZE_LEN/8;
     
     while(!SD.begin(pinCs))
     {
@@ -52,24 +77,6 @@ unsigned char sd_epaper::begin(unsigned char pinCs)
     
     openFile();
     
-    clear();
-
-}
-
-unsigned char sd_epaper::begin()
-{
-
-    openFileTime = 1;
-    closeFileTime = 1;
-    
-    while(!SD.begin(Pin_SD_CS))
-    {
-        println_sd("initialization failed!");
-        delay(100);
-    }
-    
-    println_sd("initialization done.");  
-    openFile();
     clear();
 
 }
@@ -94,8 +101,8 @@ unsigned char sd_epaper::closeFile()
 *********************************************************************************************************/
 unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 {
-    new_image.seek(line*25);
-    new_image.write(dta, 25);
+    new_image.seek(line*LINE_BYTE);
+    new_image.write(dta, LINE_BYTE);
 }
 
 /*********************************************************************************************************
@@ -104,8 +111,8 @@ unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 *********************************************************************************************************/
 unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 {
-    new_image.seek(line*25);
-    new_image.read(dta, 25);
+    new_image.seek(line*LINE_BYTE);
+    new_image.read(dta, LINE_BYTE);
 }
 
 /*********************************************************************************************************
@@ -115,8 +122,14 @@ unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
 {
 
+    if(x >= SIZE_LEN || y >= SIZE_WIDTH)        // ERR INPUT
+    {
+        println_sd("err input in putPixel");
+        return 0;
+    }
+    
     int bit = x & 0x07;
-    int byte = x / 8 + y * (pixel_width / 8);
+    int byte = x / 8 + y * (SIZE_LEN / 8);
     int mask = 0x01 << bit;
 
     new_image.seek(byte);
@@ -132,6 +145,8 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
     }
     new_image.seek(byte);
     new_image.write(tmp);
+    
+    return 1;
 }
 
 /*********************************************************************************************************
@@ -140,8 +155,15 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
 *********************************************************************************************************/
 unsigned char sd_epaper::getPixel(int x, int y)
 {
+
+    if(x >= SIZE_LEN || y >= SIZE_WIDTH)        // ERR INPUT
+    {
+        println_sd("err input in putPixel");
+        return 0;
+    }
+    
     int bit = x & 0x07;
-    int byte = x / 8 + y * (pixel_width / 8);
+    int byte = x / 8 + y * (SIZE_LEN / 8);
     int mask = 0x01 << bit;
 
     new_image.seek(byte);
@@ -162,11 +184,11 @@ unsigned char sd_epaper::getPixel(int x, int y)
 unsigned char sd_epaper::clear()
 {
     new_image.seek(0);
-    memset(lineDta, 0x00, 25);
+    memset(lineDta, 0x00, LINE_BYTE);
 
-    for(int i=0; i<96; i++)
+    for(int i=0; i<SIZE_WIDTH; i++)
     {
-        new_image.write(lineDta, 25);
+        new_image.write(lineDta, LINE_BYTE);
     }
 }
 

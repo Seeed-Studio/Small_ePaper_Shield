@@ -96,8 +96,8 @@ void setup()
 
     Serial.begin(38400);
     
-    EPAPER.begin(EPD_2_0);                          // setup epaper, size
-    eSD.begin(4);                                   
+    EPAPER.begin(EPD_1_44);                          // setup epaper, size
+    eSD.begin(4, EPD_1_44);                                   
     GT20L16.begin(PINCSGT);
 
     EPAPER.drawString("hello world!!", 10, 10);
@@ -109,7 +109,7 @@ void setup()
     
     EPAPER.drawCircle(40, 50, 20);
     EPAPER.fillRectangle(10, 10, 60, 30);
-    EPAPER.fillCircle(80, 80, 5);
+    EPAPER.fillCircle(90, 80, 5);
     cout << endl;
     
     cout << "the end" << endl;

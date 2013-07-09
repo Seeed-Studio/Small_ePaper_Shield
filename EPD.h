@@ -72,7 +72,7 @@ private:
 	bool filler;
 
 public:
-    unsigned char lineDta[25];
+    unsigned char lineDta[33];
 
 public:
 	// power up and power down the EPD panel

@@ -30,11 +30,11 @@
 #define __SD_EPAPER_H__
 
 #include "ePaperDfs.h"
+#include "EPD.h"
 
 #define OLDIMAGENAME "oldimage"
 #define NEWIMAGENAME "newimage"
 
-#define pixel_width 200
 #define BLACK   1
 #define WHITE   0
 
@@ -52,17 +52,21 @@ class sd_epaper
 {
 private:
 
-    unsigned char lineDta[25];          // line data
+    unsigned char lineDta[33];          // line data
+    
     File old_image;
     File new_image;
+    
+    int SIZE_LEN;
+    int SIZE_WIDTH;
+    int LINE_BYTE;
     
     int openFileTime;
     int closeFileTime;
     
 public:
 
-    unsigned char begin(unsigned char pinCs);
-    unsigned char begin();
+    unsigned char begin(unsigned char pinCs, EPD_size sz);
     
     unsigned char openFile();
     unsigned char closeFile();

@@ -42,8 +42,8 @@
 #define print_ep(X)         Serial.print(X)
 #define println_ep(X)       Serial.println(X)
 #else
-#define print_sd(X)
-#define println_sd(X)
+#define print_ep(X)
+#define println_ep(X)
 #endif
 
 class ePaper
@@ -53,6 +53,9 @@ private:
 
     int getTemperature();                   // get temperature
     unsigned char tMatrix[32];
+    
+    int SIZE_LEN;
+    int SIZE_WIDTH;
     
     
 public:
