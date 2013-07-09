@@ -241,14 +241,14 @@ void EPD_Class::start() {
 
 void EPD_Class::end() 
 {
-#if 0
-	this->frame_fixed(0x55, EPD_normal); // dummy frame
-	this->line(0x7fffu, 0, 0x55, false, EPD_normal); // dummy_line
+#if 1
+//	this->frame_fixed(0x55, EPD_normal); // dummy frame
+//	this->line(0x7fffu, 0, 0x55, false, EPD_normal); // dummy_line
 
-	Delay_ms(25);
+//	Delay_ms(30);
 
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
-	Delay_ms(30);
+	Delay_ms(300);
 
 	digitalWrite(this->EPD_Pin_BORDER, HIGH);
 
@@ -282,7 +282,7 @@ void EPD_Class::end()
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x0c), 2);
 
-	Delay_ms(120);
+	Delay_ms(150);
 
 	// all charge pumps off
 	Delay_us(10);
@@ -302,7 +302,7 @@ void EPD_Class::end()
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x50), 2);
 
-	Delay_ms(40);
+	Delay_ms(50);
 
 	// discharge internal - 2
 	Delay_us(10);
@@ -328,7 +328,7 @@ void EPD_Class::end()
 
 	SPI_put(0x00);
 
-	Delay_ms(150);
+	Delay_ms(200);
 
 	digitalWrite(this->EPD_Pin_DISCHARGE, LOW);
 }
@@ -364,8 +364,10 @@ int EPD_Class::temperature_to_factor_10x(int temperature) {
 // the image is arranged by line which matches the display size
 // so smallest would have 96 * 32 bytes
 
-void EPD_Class::frame_fixed(uint8_t fixed_value, EPD_stage stage) {
-	for (uint8_t line = 0; line < this->lines_per_display ; ++line) {
+void EPD_Class::frame_fixed(uint8_t fixed_value, EPD_stage stage) 
+{
+	for (uint8_t line = 0; line < this->lines_per_display ; ++line) 
+    {
 		this->line(line, 0, fixed_value, false, stage);
 	}
 }
@@ -430,6 +432,7 @@ void EPD_Class::frame_data_repeat(PROGMEM const uint8_t *image, EPD_stage stage)
 
 	long stage_time = this->factored_stage_time;
 
+#if 0
 
 	do {
 		unsigned long t_start = millis();
@@ -444,7 +447,13 @@ void EPD_Class::frame_data_repeat(PROGMEM const uint8_t *image, EPD_stage stage)
 			stage_time -= t_start - t_end + 1 + ULONG_MAX;
 		}
 	} while (stage_time > 0);
+#else
 
+    for(int i=0; i<7; i++)
+    {
+        this->frame_data(image, stage);
+    }
+#endif
 }
 
 void EPD_Class::frame_data_repeat_sd(EPD_stage stage) 

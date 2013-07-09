@@ -59,7 +59,6 @@ private:
     
     EPD_DIR direction;
     
-    
 public:
 
     EPD_size size;
@@ -76,7 +75,7 @@ public:
     
     unsigned char display();                // refresh 
     
-    void drawPixel(unsigned char x, unsigned char y, unsigned char color)
+    inline void drawPixel(unsigned char x, unsigned char y, unsigned char color)
     {
 		eSD.putPixel(x, y, color);
 	}
