@@ -96,11 +96,11 @@ void setup()
 
     Serial.begin(38400);
     
-    EPAPER.begin(EPD_2_7);                          // setup epaper, size
+    EPAPER.begin(EPD_2_0);                          // setup epaper, size
     
-    EPAPER.setDirection(DIRLEFT);
+    //EPAPER.setDirection(DIRLEFT);
     
-    eSD.begin(4, EPD_2_7);                                   
+    eSD.begin(4, EPD_2_0);                                   
     GT20L16.begin(PINCSGT);
 
     int timer1 = millis();

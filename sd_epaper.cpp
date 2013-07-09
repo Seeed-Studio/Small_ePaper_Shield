@@ -167,12 +167,16 @@ void sd_epaper::putPixel(int x, int y, unsigned char pixel)
     
     int bit = x & 0x07;
     int byte = (x>>3) + y * LINE_BYTE;
-   // int byte = x / 8 + y * (SIZE_LEN / 8);
     
     int mask = 0x01 << bit;
 
     new_image.seek(byte);
     unsigned char tmp = new_image.read();
+
+    if((tmp & mask) == (pixel << bit))
+    {
+        return ;
+    }
 
     if (BLACK == pixel)
     {
@@ -182,6 +186,7 @@ void sd_epaper::putPixel(int x, int y, unsigned char pixel)
     {
         tmp &= ~mask;
     }
+
     new_image.seek(byte);
     new_image.write(tmp);
 
