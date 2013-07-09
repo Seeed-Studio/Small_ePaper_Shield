@@ -51,6 +51,21 @@ void EPD_Class::begin(EPD_size sz)
 	EPD_Pin_BUSY        = Pin_BUSY;
 
 
+	pinMode(Pin_PWM, OUTPUT);
+	pinMode(Pin_BUSY, INPUT);
+	pinMode(Pin_RESET, OUTPUT);
+	pinMode(Pin_PANEL_ON, OUTPUT);
+	pinMode(Pin_DISCHARGE, OUTPUT);
+	pinMode(Pin_BORDER, OUTPUT);
+	pinMode(Pin_EPD_CS, OUTPUT);
+
+	digitalWrite(Pin_PWM, LOW);
+	digitalWrite(Pin_RESET, LOW);
+	digitalWrite(Pin_PANEL_ON, LOW);
+	digitalWrite(Pin_DISCHARGE, LOW);
+	digitalWrite(Pin_BORDER, LOW);
+	digitalWrite(Pin_EPD_CS, HIGH);
+    
 	this->size = sz;
 	this->stage_time = 480; // milliseconds
 	this->lines_per_display = 96;
@@ -241,11 +256,13 @@ void EPD_Class::start() {
 
 void EPD_Class::end() 
 {
-#if 1
-//	this->frame_fixed(0x55, EPD_normal); // dummy frame
-//	this->line(0x7fffu, 0, 0x55, false, EPD_normal); // dummy_line
 
-//	Delay_ms(30);
+	//this->frame_fixed(0x55, EPD_normal); // dummy frame
+    //delay(50);
+#if 1
+	this->line(0x7fffu, 0, 0x55, false, EPD_normal); // dummy_line
+
+	Delay_ms(50);
 
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
 	Delay_ms(300);
@@ -317,7 +334,7 @@ void EPD_Class::end()
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x00), 2);
-#endif
+
 	// turn of power and all signals
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
@@ -328,9 +345,10 @@ void EPD_Class::end()
 
 	SPI_put(0x00);
 
-	Delay_ms(200);
+	Delay_ms(500);
 
 	digitalWrite(this->EPD_Pin_DISCHARGE, LOW);
+#endif
 }
 
 

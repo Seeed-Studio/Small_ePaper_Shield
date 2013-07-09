@@ -105,15 +105,15 @@ void setup()
 
     int timer1 = millis();
     EPAPER.drawString("hello world!!", 10, 10);
-    EPAPER.drawNumber(-129, 30, 50);
+    EPAPER.drawNumber(-10086, 30, 50);
     
-    EPAPER.drawFloat(1.25, 2, 70, 50);
+    EPAPER.drawFloat(-1.25, 2, 70, 50);
     
-    EPAPER.drawLine(50, 50, 0, 0);
+    EPAPER.drawLine(50, 50, 100, 90);
     
     EPAPER.drawCircle(40, 50, 20);
     EPAPER.fillRectangle(10, 10, 60, 30);
-    EPAPER.fillCircle(90, 80, 5);
+    EPAPER.fillCircle(50, 50, 35);
     cout << endl;
     
     cout << "the end" << endl;
