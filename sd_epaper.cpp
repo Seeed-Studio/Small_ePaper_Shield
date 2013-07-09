@@ -134,15 +134,8 @@ unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
-unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
+void sd_epaper::putPixel(int x, int y, unsigned char pixel)
 {
-
-    if(x >= DISP_LEN || y >= DISP_WIDTH)        // ERR INPUT
-    {
-        println_sd("err input in putPixel");
-        return 0;
-    }
-    
     int x1 = x;
     int y1 = y;
     
@@ -157,13 +150,13 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
         
         case DIRRIGHT:
         
-        x = SIZE_LEN   - y1;
+        x = SIZE_LEN - y1;
         y = x1;
         break;
         
         case DIRDOWN:
         
-        x = SIZE_LEN   - x1;
+        x = SIZE_LEN - x1;
         y = SIZE_WIDTH - y1;
         break;
         
@@ -173,7 +166,9 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
     }
     
     int bit = x & 0x07;
-    int byte = x / 8 + y * (SIZE_LEN / 8);
+    int byte = (x>>3) + y * LINE_BYTE;
+   // int byte = x / 8 + y * (SIZE_LEN / 8);
+    
     int mask = 0x01 << bit;
 
     new_image.seek(byte);
@@ -189,22 +184,15 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
     }
     new_image.seek(byte);
     new_image.write(tmp);
-    
-    return 1;
+
 }
 
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
-unsigned char sd_epaper::getPixel(int x, int y)
+void sd_epaper::getPixel(int x, int y)
 {
-
-    if(x >= DISP_LEN || y >= DISP_WIDTH)        // ERR INPUT
-    {
-        println_sd("err input in putPixel");
-        return 0;
-    }
 
     int bit = x & 0x07;
     int byte = x / 8 + y * (SIZE_LEN / 8);
@@ -217,7 +205,6 @@ unsigned char sd_epaper::getPixel(int x, int y)
     if(tmp & (0x01 << bit))tmp = BLACK;
     else tmp = WHITE;
 
-    return tmp;
 }
 
 

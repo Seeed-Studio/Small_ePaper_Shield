@@ -453,7 +453,7 @@ void EPD_Class::frame_data_repeat_sd(EPD_stage stage)
 	long stage_time = this->factored_stage_time;
 
 
-    for(int i=0; i<5; i++)
+    for(int i=0; i<7; i++)
     {
 		unsigned long t_start = millis();
 		this->frame_data_sd(stage);

@@ -98,11 +98,12 @@ void setup()
     
     EPAPER.begin(EPD_2_7);                          // setup epaper, size
     
-    EPAPER.setDirection(DIRDOWN);
+    EPAPER.setDirection(DIRLEFT);
     
     eSD.begin(4, EPD_2_7);                                   
     GT20L16.begin(PINCSGT);
 
+    int timer1 = millis();
     EPAPER.drawString("hello world!!", 10, 10);
     EPAPER.drawNumber(-129, 30, 50);
     
@@ -116,6 +117,9 @@ void setup()
     cout << endl;
     
     cout << "the end" << endl;
+    
+    cout << "write sd card time: " << millis() - timer1 << endl;
+    
     
     EPAPER.display();                               // use only once
 

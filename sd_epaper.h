@@ -81,8 +81,8 @@ public:
     unsigned char putLine(int line, unsigned char *dta);
     unsigned char getLine(int line, unsigned char *dta);
     
-    unsigned char putPixel(int x, int y, unsigned char pixel);
-    unsigned char getPixel(int x, int y);
+    void putPixel(int x, int y, unsigned char pixel);
+    void getPixel(int x, int y);
     unsigned char clear();
 
 };
