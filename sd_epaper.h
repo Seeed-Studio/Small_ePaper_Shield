@@ -38,6 +38,15 @@
 #define BLACK   1
 #define WHITE   0
 
+#define SD_DEBUG            0
+
+#if SD_DEBUG
+#define print_sd(X)         Serial.print(X)
+#define println_sd(X)       Serial.println(X)
+#else
+#define print_sd(X)
+#define println_sd(X)
+#endif
 
 class sd_epaper
 {
@@ -53,6 +62,7 @@ private:
 public:
 
     unsigned char begin(unsigned char pinCs);
+    unsigned char begin();
     
     unsigned char openFile();
     unsigned char closeFile();

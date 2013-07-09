@@ -36,6 +36,16 @@
 #include "sd_epaper.h"
 #include "ePaperDfs.h"
 
+#define EP_DEBUG            1
+
+#if EP_DEBUG
+#define print_ep(X)         Serial.print(X)
+#define println_ep(X)       Serial.println(X)
+#else
+#define print_sd(X)
+#define println_sd(X)
+#endif
+
 class ePaper
 {
 

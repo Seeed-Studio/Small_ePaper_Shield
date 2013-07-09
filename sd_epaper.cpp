@@ -42,16 +42,34 @@ unsigned char sd_epaper::begin(unsigned char pinCs)
     openFileTime = 1;
     closeFileTime = 1;
     
-    while(!SD.begin(4))
+    while(!SD.begin(pinCs))
     {
-        Serial.println("initialization failed!");
+        println_sd("initialization failed!");
         delay(100);
     }
     
-    Serial.println("initialization done.");
+    println_sd("initialization done.");
     
     openFile();
     
+    clear();
+
+}
+
+unsigned char sd_epaper::begin()
+{
+
+    openFileTime = 1;
+    closeFileTime = 1;
+    
+    while(!SD.begin(Pin_SD_CS))
+    {
+        println_sd("initialization failed!");
+        delay(100);
+    }
+    
+    println_sd("initialization done.");  
+    openFile();
     clear();
 
 }
@@ -76,12 +94,8 @@ unsigned char sd_epaper::closeFile()
 *********************************************************************************************************/
 unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 {
-
-    //Serial.print("Writing to NEWIMAGE.ep");
     new_image.seek(line*25);
     new_image.write(dta, 25);
-
-
 }
 
 /*********************************************************************************************************
@@ -90,10 +104,8 @@ unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 *********************************************************************************************************/
 unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 {
-
     new_image.seek(line*25);
     new_image.read(dta, 25);
-
 }
 
 /*********************************************************************************************************
@@ -120,8 +132,6 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
     }
     new_image.seek(byte);
     new_image.write(tmp);
-
-
 }
 
 /*********************************************************************************************************
@@ -130,7 +140,6 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
 *********************************************************************************************************/
 unsigned char sd_epaper::getPixel(int x, int y)
 {
-
     int bit = x & 0x07;
     int byte = x / 8 + y * (pixel_width / 8);
     int mask = 0x01 << bit;
@@ -143,7 +152,6 @@ unsigned char sd_epaper::getPixel(int x, int y)
     else tmp = WHITE;
 
     return tmp;
-
 }
 
 
@@ -153,8 +161,6 @@ unsigned char sd_epaper::getPixel(int x, int y)
 *********************************************************************************************************/
 unsigned char sd_epaper::clear()
 {
-
-    //openFile();
     new_image.seek(0);
     memset(lineDta, 0x00, 25);
 
@@ -162,12 +168,10 @@ unsigned char sd_epaper::clear()
     {
         new_image.write(lineDta, 25);
     }
-    //closeFile();
 }
 
 
 sd_epaper eSD;
-
 
 /*********************************************************************************************************
   END FILE

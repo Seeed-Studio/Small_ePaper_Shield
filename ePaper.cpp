@@ -116,14 +116,11 @@ unsigned char ePaper::drawUnicode(unsigned int uniCode, unsigned char x, unsigne
 {
     
     int dtaLen = GT20L16.getMatrixUnicode(uniCode, tMatrix);
-    
-    //cout << "dtaLen = " << dtaLen << endl;
 
     int pX      = 0;
     int pY      = 0;
     int color   = 0;
-    
-    //eSD.openFile();
+
     for(int k = 0; k<2; k++)
     {
         for(int i=0; i<8; i++)
@@ -147,8 +144,7 @@ unsigned char ePaper::drawUnicode(unsigned int uniCode, unsigned char x, unsigne
             }
         }
     }
-    //eSD.closeFile();
-    
+
     return dtaLen/2;        // x +
 }
 
@@ -271,15 +267,18 @@ unsigned char ePaper::drawLine(int x0, int y0, int x1, int y1)
     int y = y1-y0;
     int dx = abs(x), sx = x0<x1 ? 1 : -1;
     int dy = -abs(y), sy = y0<y1 ? 1 : -1;
-    int err = dx+dy, e2;                                                /* error value e_xy             */
-    for (;;){                                                           /* loop                         */
+    int err = dx+dy, e2;                                              
+    for (;;)
+    {                                                          
         drawPixel(x0,y0,1);
         e2 = 2*err;
-        if (e2 >= dy) {                                                 /* e_xy+e_x > 0                 */
+        if (e2 >= dy) 
+        {                                                
             if (x0 == x1) break;
             err += dy; x0 += sx;
         }
-        if (e2 <= dx) {                                                 /* e_xy+e_y < 0                 */
+        if (e2 <= dx) 
+        {                                                
             if (y0 == y1) break;
             err += dx; y0 += sy;
         }
@@ -311,14 +310,12 @@ unsigned char ePaper::drawCircle(int poX, int poY, int r)
 
 /*********************************************************************************************************
 ** Function name:           display
-** Descriptions:            init IO
+** Descriptions:            you should use this function once after finish drawing
 *********************************************************************************************************/
 unsigned char ePaper::display()
 {
     start();
-    //eSD.openFile();
     EPD.image_sd();
-    //eSD.closeFile();
     end();
 }
 

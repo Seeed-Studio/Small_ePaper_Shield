@@ -14,7 +14,6 @@ unsigned char matrix[32];
 void dispMatrix(int len, unsigned char *Matrix)
 {
 
-    //eSD.openFile();
     for(int k = 0; k<2; k++)
     {
         for(int i=0; i<8; i++)
@@ -24,7 +23,6 @@ void dispMatrix(int len, unsigned char *Matrix)
 
                 if(Matrix[j+(len/2)*k] & (0x01<<(7-i)))
                 {
-                    //Serial.print("**");
                     Serial.write(random('A', 'Z'));         // dandom...fuck
                     Serial.write(random('A', 'Z'));         // ...    
                 }
@@ -36,7 +34,7 @@ void dispMatrix(int len, unsigned char *Matrix)
             Serial.println();
         }
     }
-    //eSD.closeFile();
+
 }
 
 void dispMatrixs(int len, unsigned int *unicode)
@@ -59,8 +57,7 @@ unsigned char dispUnicodeGT(int x, int y, unsigned int uniCode)
     int pX      = 0;
     int pY      = 0;
     int color   = 0;
-    
-    //eSD.openFile();
+
     for(int k = 0; k<2; k++)
     {
         for(int i=0; i<8; i++)
@@ -70,7 +67,6 @@ unsigned char dispUnicodeGT(int x, int y, unsigned int uniCode)
 
                 if(tmpMatrix[j+(dtaLen/2)*k] & (0x01<<(7-i)))
                 {
-                    //Serial.print("**");
                     Serial.write(random('A', 'Z'));         // dandom...fuck
                     Serial.write(random('A', 'Z'));         // ...    
                     color = 1;
@@ -89,26 +85,21 @@ unsigned char dispUnicodeGT(int x, int y, unsigned int uniCode)
             Serial.println();
         }
     }
-    //eSD.closeFile();
-    
+
     cout << "out dispUnicodeGT" << endl;
-    
-    
-    
+
     return dtaLen;
 }
 
 void setup()
 {
+
     Serial.begin(38400);
     
-    EPAPER.begin(EPD_2_0);
-    eSD.begin(4);
+    EPAPER.begin(EPD_2_0);                          // setup epaper, size
+    eSD.begin(4);                                   
     GT20L16.begin(PINCSGT);
 
-    int x = 10;
-    int y = 15;
-    
     EPAPER.drawString("hello world!!", 10, 10);
     EPAPER.drawNumber(-129, 30, 50);
     
@@ -118,11 +109,12 @@ void setup()
     
     EPAPER.drawCircle(40, 50, 20);
     EPAPER.fillRectangle(10, 10, 60, 30);
+    EPAPER.fillCircle(80, 80, 5);
     cout << endl;
     
     cout << "the end" << endl;
     
-    EPAPER.display();
+    EPAPER.display();                               // use only once
 
 }
 
