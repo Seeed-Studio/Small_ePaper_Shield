@@ -32,9 +32,11 @@
 #include "ePaper.h"
 
 /*********************************************************************************************************
-** Function name:           begin
-** Descriptions:            begin
-*********************************************************************************************************/
+* \brief According to EPD size and temperature to get stage_time
+* \note Refer to COG document Section 5.3 for more details
+*
+* \param EPD_type_index The defined EPD size
+**********************************************************************************************************/
 void ePaper::begin(EPD_size sz)
 {
     size = sz;
@@ -93,6 +95,17 @@ void ePaper::end()
 {
     EPD.end();
 }
+
+/*********************************************************************************************************
+** Function name:           end
+** Descriptions:            read image from flash
+*********************************************************************************************************/
+void ePaper::image_flash(PROGMEM const unsigned char *image)
+{
+    start();
+    EPD.image(image);
+    end();
+} 
 
 /*********************************************************************************************************
 ** Function name:           init_io
@@ -179,6 +192,23 @@ unsigned char ePaper::drawUnicode(unsigned int uniCode, unsigned char x, unsigne
     }
 
     return dtaLen/2;        // x +
+}
+
+/*********************************************************************************************************
+** Function name:           init_io
+** Descriptions:            init IO
+*********************************************************************************************************/
+unsigned char ePaper::deawUnicodeString(unsigned int *uniCode, unsigned char len, unsigned char x, unsigned char y)
+{
+    int xPlus = 0;
+    int xSum  = 0;
+    for(int i=0; i<len; i++)
+    {
+        xPlus = drawUnicode(uniCode[i], x, y);
+        x += xPlus;
+        xSum += xPlus;
+    }
+    return xSum;
 }
 
 /*********************************************************************************************************

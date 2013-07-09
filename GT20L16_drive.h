@@ -46,6 +46,9 @@ private:
 public:
 
     void begin(int pinSelect);
+    
+    void begin(){begin(PIN_GT20L16_CS);}
+
     int getMatrixUnicode(unsigned int uniCode, unsigned char *matrix);
 
 

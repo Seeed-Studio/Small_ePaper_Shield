@@ -27,7 +27,6 @@
 */
 #include <SD.h>
 #include <SPI.h>
-#include <Streaming.h>
 
 #include "sd_epaper.h"
 #include "ePaperDfs.h"
@@ -99,15 +98,14 @@ void sd_epaper::setDirection(EPD_DIR dir)
 unsigned char sd_epaper::openFile()
 {
     new_image = SD.open(NEWIMAGENAME, FILE_WRITE);
-    if(new_image)cout << "new_image open ok: " << openFileTime++ << endl;
-    else cout << "new_image_open err: " << openFileTime++ << endl;
+    if(new_image)println_sd("new_image open ok");
+    else println_sd("new_image_open err: ");
 
 }
 
 unsigned char sd_epaper::closeFile()
 {
     new_image.close();
-    cout << "new_image close : " << closeFileTime++ << endl;
 }
 
 /*********************************************************************************************************

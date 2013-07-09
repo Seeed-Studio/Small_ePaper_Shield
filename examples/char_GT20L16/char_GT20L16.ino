@@ -1,6 +1,5 @@
 // demo of ...
 
-#include <Streaming.h>
 #include <ePaper.h>
 #include <SPI.h>
 #include <SD.h>
@@ -51,8 +50,6 @@ unsigned char dispUnicodeGT(int x, int y, unsigned int uniCode)
     unsigned char tmpMatrix[32];
     
     int dtaLen = GT20L16.getMatrixUnicode(uniCode, tmpMatrix);
-    
-    cout << "dtaLen = " << dtaLen << endl;
 
     int pX      = 0;
     int pY      = 0;
@@ -86,8 +83,6 @@ unsigned char dispUnicodeGT(int x, int y, unsigned int uniCode)
         }
     }
 
-    cout << "out dispUnicodeGT" << endl;
-
     return dtaLen;
 }
 
@@ -115,11 +110,7 @@ void setup()
     EPAPER.fillRectangle(10, 10, 60, 30);
     EPAPER.fillCircle(50, 50, 35);
     cout << endl;
-    
-    cout << "the end" << endl;
-    
-    cout << "write sd card time: " << millis() - timer1 << endl;
-    
+
     
     EPAPER.display();                               // use only once
 

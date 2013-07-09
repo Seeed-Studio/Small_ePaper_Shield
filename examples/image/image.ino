@@ -1,6 +1,5 @@
-// demo of ...
+// demo of display image
 
-#include <Streaming.h>
 #include <ePaper.h>
 #include <SPI.h>
 #include <SD.h>
@@ -10,10 +9,7 @@
 
 #define PINCSGT         9
 
-// Change this for different display size
-// supported sizes: 144 200 270
 #define SCREEN_SIZE 200
-
 
 // set up images from screen size2
 #if (SCREEN_SIZE == 144)
@@ -32,16 +28,11 @@
 #error "Unknown EPB size: Change the #define SCREEN_SIZE to a supported value"
 #endif
 
-
 void setup()
 {
+    EPAPER.begin(EPD_SIZE);                             // setup epaper, size
 
-    Serial.begin(38400);
-    
-    EPAPER.begin(EPD_SIZE);                          // setup epaper, size
-    EPAPER.start();
-    EPD.image(IMAGEFILE);
-    EPAPER.end();
+    EPAPER.image_flash(IMAGEFILE);
 
 }
 

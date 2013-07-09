@@ -75,6 +75,8 @@ public:
     
     unsigned char display();                // refresh 
     
+    void image_flash(PROGMEM const unsigned char *image);           // read image from flash
+    
     inline void drawPixel(unsigned char x, unsigned char y, unsigned char color)
     {
 		eSD.putPixel(x, y, color);
@@ -83,6 +85,9 @@ public:
     unsigned char drawChar(char c, unsigned char x, unsigned char y);
     unsigned char drawString(char *string, int poX, int poY);
     unsigned char drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y);
+    
+    unsigned char deawUnicodeString(unsigned int *uniCode, unsigned char len, unsigned char x, unsigned char y);
+    
     unsigned char drawNumber(long long_num,int poX, int poY);
     unsigned char drawFloat(float floatNumber,unsigned char decimal,unsigned int poX, unsigned int poY);
     

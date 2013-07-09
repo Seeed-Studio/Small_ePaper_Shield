@@ -1,6 +1,5 @@
 // demo of ...
 
-#include <Streaming.h>
 #include <ePaper.h>
 #include <SPI.h>
 #include <SD.h>
@@ -58,8 +57,6 @@ void setup()
     unsigned int utest[3] = {'2', 'b', 'k'};
     dispMatrixs(3, utest);
 
-    
-    cout << endl;
 
 }
 

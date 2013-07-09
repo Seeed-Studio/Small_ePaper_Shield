@@ -73,6 +73,7 @@ public:
 
     
     unsigned char begin(unsigned char pinCs, EPD_size sz);
+    void begin(EPD_size sz){begin(Pin_SD_CS, sz);}
     void setDirection(EPD_DIR dir);
     
     unsigned char openFile();
