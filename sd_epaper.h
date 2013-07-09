@@ -61,18 +61,26 @@ private:
     int SIZE_WIDTH;
     int LINE_BYTE;
     
+    int DISP_LEN;
+    int DISP_WIDTH;
+    
     int openFileTime;
     int closeFileTime;
     
+    EPD_DIR direction;
+    
 public:
 
+    
     unsigned char begin(unsigned char pinCs, EPD_size sz);
+    void setDirection(EPD_DIR dir);
     
     unsigned char openFile();
     unsigned char closeFile();
     
     unsigned char putLine(int line, unsigned char *dta);
     unsigned char getLine(int line, unsigned char *dta);
+    
     unsigned char putPixel(int x, int y, unsigned char pixel);
     unsigned char getPixel(int x, int y);
     unsigned char clear();

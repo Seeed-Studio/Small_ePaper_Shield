@@ -57,12 +57,16 @@ private:
     int SIZE_LEN;
     int SIZE_WIDTH;
     
+    EPD_DIR direction;
+    
     
 public:
 
     EPD_size size;
 
     void begin(EPD_size sz);
+    
+    void setDirection(EPD_DIR dir);
     
     void start();
     

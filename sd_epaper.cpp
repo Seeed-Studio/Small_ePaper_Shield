@@ -65,6 +65,9 @@ unsigned char sd_epaper::begin(unsigned char pinCs, EPD_size sz)
         while(1);                   // die here
     }
     
+    DISP_LEN    = SIZE_LEN;
+    DISP_WIDTH  = SIZE_WIDTH;
+    
     LINE_BYTE = SIZE_LEN/8;
     
     while(!SD.begin(pinCs))
@@ -80,6 +83,18 @@ unsigned char sd_epaper::begin(unsigned char pinCs, EPD_size sz)
     clear();
 
 }
+
+void sd_epaper::setDirection(EPD_DIR dir)
+{
+    direction = dir;
+    
+    if((direction == DIRLEFT) || (direction == DIRRIGHT))
+    {
+        DISP_LEN    = SIZE_WIDTH;
+        DISP_WIDTH  = SIZE_LEN;
+    }
+}
+
 
 unsigned char sd_epaper::openFile()
 {
@@ -122,10 +137,39 @@ unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
 {
 
-    if(x >= SIZE_LEN || y >= SIZE_WIDTH)        // ERR INPUT
+    if(x >= DISP_LEN || y >= DISP_WIDTH)        // ERR INPUT
     {
         println_sd("err input in putPixel");
         return 0;
+    }
+    
+    int x1 = x;
+    int y1 = y;
+    
+    switch(direction)
+    {
+        case DIRLEFT:
+        
+        x = y1;
+        y = SIZE_WIDTH-x1;
+        
+        break;
+        
+        case DIRRIGHT:
+        
+        x = SIZE_LEN   - y1;
+        y = x1;
+        break;
+        
+        case DIRDOWN:
+        
+        x = SIZE_LEN   - x1;
+        y = SIZE_WIDTH - y1;
+        break;
+        
+        default:
+        
+        ;
     }
     
     int bit = x & 0x07;
@@ -156,12 +200,12 @@ unsigned char sd_epaper::putPixel(int x, int y, unsigned char pixel)
 unsigned char sd_epaper::getPixel(int x, int y)
 {
 
-    if(x >= SIZE_LEN || y >= SIZE_WIDTH)        // ERR INPUT
+    if(x >= DISP_LEN || y >= DISP_WIDTH)        // ERR INPUT
     {
         println_sd("err input in putPixel");
         return 0;
     }
-    
+
     int bit = x & 0x07;
     int byte = x / 8 + y * (SIZE_LEN / 8);
     int mask = 0x01 << bit;

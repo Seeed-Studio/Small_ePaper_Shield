@@ -97,6 +97,9 @@ void setup()
     Serial.begin(38400);
     
     EPAPER.begin(EPD_2_7);                          // setup epaper, size
+    
+    EPAPER.setDirection(DIRDOWN);
+    
     eSD.begin(4, EPD_2_7);                                   
     GT20L16.begin(PINCSGT);
 

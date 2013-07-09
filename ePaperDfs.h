@@ -31,6 +31,14 @@
 
 // pin define
 
+typedef enum {
+	DIRNORMAL,
+	DIRLEFT,
+	DIRRIGHT,
+    DIRDOWN
+} EPD_DIR;
+
+
 #define Pin_TEMPERATURE   A0
 #define Pin_PANEL_ON      2
 #define Pin_BORDER        3
@@ -44,6 +52,7 @@
 
 #define Pin_OE123         A1
 #define Pin_STV_IN        A3
+
 
 // spi cs
 

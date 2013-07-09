@@ -38,7 +38,8 @@
 void ePaper::begin(EPD_size sz)
 {
     size = sz;
-
+    direction = DIRNORMAL;
+    
     switch(size)
     {
         case EPD_1_44:              // 128*96
@@ -65,6 +66,15 @@ void ePaper::begin(EPD_size sz)
     init_io();
 }
 
+/*********************************************************************************************************
+** Function name:           begin
+** Descriptions:            begin
+*********************************************************************************************************/
+void ePaper::setDirection(EPD_DIR dir)
+{
+    direction = dir;
+    eSD.setDirection(direction);
+}
 /*********************************************************************************************************
 ** Function name:           start
 ** Descriptions:            start
