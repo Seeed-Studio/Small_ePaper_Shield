@@ -96,8 +96,8 @@ void setup()
 
     Serial.begin(38400);
     
-    EPAPER.begin(EPD_1_44);                          // setup epaper, size
-    eSD.begin(4, EPD_1_44);                                   
+    EPAPER.begin(EPD_2_7);                          // setup epaper, size
+    eSD.begin(4, EPD_2_7);                                   
     GT20L16.begin(PINCSGT);
 
     EPAPER.drawString("hello world!!", 10, 10);
