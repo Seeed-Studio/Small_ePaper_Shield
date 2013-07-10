@@ -1,5 +1,14 @@
-// demo of text
-// note: you should insert an SD card if you want to use this demo
+/*-------------------------------------------------------------------------------------------
+  demo of display text
+  
+  loovee
+  2013-7-10
+  
+  note: if you use an Arduin UNO, Seeeduino 3.0 (any board that use Atmega 328P or 32U4) 
+        you should insert an SD card if you want to use this demo
+        if you use a Arduino Mega(any board that use Atmega1280 or Atmega2560), you neen't
+        insert an SD card for this demo
+-------------------------------------------------------------------------------------------*/ 
 
 #include <ePaper.h>
 #include <SPI.h>

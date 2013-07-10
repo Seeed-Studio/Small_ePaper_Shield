@@ -1,12 +1,15 @@
-// demo of GT20L16 test
-// you can read some matrix from GT20L16, and display it in serialmonitor
-
+/*-------------------------------------------------------------------------------------------
+  demo of GT20L16, a font chip, you can read some matrix from GT20L16, 
+  and display it in serialmonitor
+  
+  loovee
+  2013-7-10
+-------------------------------------------------------------------------------------------*/ 
 #include <ePaper.h>
 #include <SPI.h>
 #include <SD.h>
 
 #include "GT20L16_drive.h"
-
 
 unsigned char matrix[32];
 
@@ -21,7 +24,7 @@ void dispMatrix(int len, unsigned char *Matrix)
             {
                 if(Matrix[j+(len/2)*k] & (0x01<<(7-i)))
                 {
-                    Serial.write(random('A', 'Z'));         // dandom...
+                    Serial.write(random('A', 'Z'));         // random...
                     Serial.write(random('A', 'Z'));         // ...
                 }
                 else
@@ -51,8 +54,7 @@ void setup()
     EPAPER.init_io();
     GT20L16.begin();
 
-    Serial.println("hello");
-    unsigned int utest[2] = {0xc4e3, 0xbac3};
+    unsigned int utest[2] = {0xc4e3, 0xbac3};           // this means "how are you" in chinese
     dispMatrixs(2, utest);
 }
 

@@ -1,4 +1,9 @@
-// demo of display image
+/*-------------------------------------------------------------------------------------------
+  demo of ePaper Shield for display image in flash
+  
+  loovee
+  2013-7-10
+-------------------------------------------------------------------------------------------*/ 
 
 #include <ePaper.h>
 #include <SPI.h>
@@ -6,8 +11,6 @@
 
 #include "GT20L16_drive.h"
 #include "picture.h"
-
-#define PINCSGT         9
 
 #define SCREEN_SIZE 270
 
@@ -31,9 +34,7 @@
 void setup()
 {
     EPAPER.begin(EPD_SIZE);                             // setup epaper, size
-
     EPAPER.image_flash(IMAGEFILE);
-
 }
 
 void loop()

@@ -1,6 +1,16 @@
-// demo of display unicode, such as Chinese
-// note: you should insert an SD card if you want to use this demo
-// GB2312 table: http://ash.jp/code/cn/gb2312tbl.htm
+/*-------------------------------------------------------------------------------------------
+  demo of display unicode, such as Chinese
+  
+  loovee
+  2013-7-10
+  
+  note: if you use an Arduin UNO, Seeeduino 3.0 (any board that use Atmega 328P or 32U4) 
+        you should insert an SD card if you want to use this demo
+        if you use a Arduino Mega(any board that use Atmega1280 or Atmega2560), you neen't
+        insert an SD card for this demo
+        
+        GB2312 table: http://ash.jp/code/cn/gb2312tbl.htm
+-------------------------------------------------------------------------------------------*/ 
 
 #include <ePaper.h>
 #include <SPI.h>
