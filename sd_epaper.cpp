@@ -71,7 +71,7 @@ unsigned char sd_epaper::begin(unsigned char pinCs, EPD_size sz)
     
     while(!SD.begin(pinCs))
     {
-        println_sd("initialization failed!");
+        println_sd("sd card initialization failed!");
         delay(100);
     }
     
@@ -162,6 +162,8 @@ void sd_epaper::putPixel(int x, int y, unsigned char pixel)
         
         ;
     }
+    
+    if(x>DISP_LEN || y>DISP_WIDTH)return;
     
     int bit = x & 0x07;
     int byte = (x>>3) + y * LINE_BYTE;

@@ -75,6 +75,13 @@ void ePaper::begin(EPD_size sz)
 void ePaper::setDirection(EPD_DIR dir)
 {
     direction = dir;
+    
+    if((direction == DIRLEFT) || (direction == DIRRIGHT))
+    {
+        DISP_LEN    = SIZE_WIDTH;
+        DISP_WIDTH  = SIZE_LEN;
+    }
+    
     eSD.setDirection(direction);
 }
 /*********************************************************************************************************
@@ -84,6 +91,10 @@ void ePaper::setDirection(EPD_DIR dir)
 void ePaper::start()
 {
     EPD.start();                 // power up the EPD panel
+    
+    int tmp = getTemperature();
+    Serial.print("temperature: ");
+    Serial.println(tmp);
     EPD.setFactor(getTemperature());         // adjust for current temperature
 }
 
@@ -158,8 +169,10 @@ int ePaper::getTemperature()
 ** Function name:           init_io
 ** Descriptions:            init IO
 *********************************************************************************************************/
-unsigned char ePaper::drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y)
+int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
 {
+    
+   // if(((x+16)>= DISP_LEN) || ((y+16) >= DISP_WIDTH) || x<0 || y<0) return 0;
     
     int dtaLen = GT20L16.getMatrixUnicode(uniCode, tMatrix);
 
@@ -198,7 +211,7 @@ unsigned char ePaper::drawUnicode(unsigned int uniCode, unsigned char x, unsigne
 ** Function name:           init_io
 ** Descriptions:            init IO
 *********************************************************************************************************/
-unsigned char ePaper::deawUnicodeString(unsigned int *uniCode, unsigned char len, unsigned char x, unsigned char y)
+int ePaper::deawUnicodeString(unsigned int *uniCode, int len, int x, int y)
 {
     int xPlus = 0;
     int xSum  = 0;
@@ -215,7 +228,7 @@ unsigned char ePaper::deawUnicodeString(unsigned int *uniCode, unsigned char len
 ** Function name:           drawChar
 ** Descriptions:            initdrawCharIO
 *********************************************************************************************************/
-unsigned char ePaper::drawChar(char c, unsigned char x, unsigned char y)
+int ePaper::drawChar(char c, int x, int y)
 {
     return drawUnicode(c, x, y);
 }
@@ -224,7 +237,7 @@ unsigned char ePaper::drawChar(char c, unsigned char x, unsigned char y)
 ** Function name:           drawChar
 ** Descriptions:            initdrawCharIO
 *********************************************************************************************************/
-unsigned char ePaper::drawString(char *string, int poX, int poY)
+int ePaper::drawString(char *string, int poX, int poY)
 {
     int sumX = 0;
     while(*string)
@@ -247,7 +260,7 @@ unsigned char ePaper::drawString(char *string, int poX, int poY)
 ** Function name:           drawNumber
 ** Descriptions:            drawNumber
 *********************************************************************************************************/
-unsigned char ePaper::drawNumber(long long_num,int poX, int poY)
+int ePaper::drawNumber(long long_num,int poX, int poY)
 {
     char tmp[10];
     sprintf(tmp, "%d", long_num);
@@ -259,7 +272,7 @@ unsigned char ePaper::drawNumber(long long_num,int poX, int poY)
 ** Function name:           init_io
 ** Descriptions:            init IO
 *********************************************************************************************************/
-unsigned char ePaper::drawFloat(float floatNumber,unsigned char decimal,unsigned int poX, unsigned int poY)
+int ePaper::drawFloat(float floatNumber, int decimal, int poX, int poY)
 {
     unsigned long temp=0;
     float decy=0.0;
@@ -324,8 +337,12 @@ unsigned char ePaper::drawFloat(float floatNumber,unsigned char decimal,unsigned
 ** Function name:           drawLine
 ** Descriptions:            drawLine
 *********************************************************************************************************/
-unsigned char ePaper::drawLine(int x0, int y0, int x1, int y1)
+void ePaper::drawLine(int x0, int y0, int x1, int y1)
 {
+    
+    //if(x0>DISP_LEN || x1>DISP_LEN || y0>DISP_WIDTH || y1>DISP_WIDTH)return;
+    //if(x0<0 || x1<0 || y0<0 || y1<0)return;
+    
     int x = x1-x0;
     int y = y1-y0;
     int dx = abs(x), sx = x0<x1 ? 1 : -1;
@@ -346,15 +363,16 @@ unsigned char ePaper::drawLine(int x0, int y0, int x1, int y1)
             err += dx; y0 += sy;
         }
     }
-
 }
 
 /*********************************************************************************************************
 ** Function name:           drawCircle
 ** Descriptions:            drawCircle
 *********************************************************************************************************/
-unsigned char ePaper::drawCircle(int poX, int poY, int r)
+void ePaper::drawCircle(int poX, int poY, int r)
 {
+   // if(poX<0 || poY<0 || r<=0)return;
+
     int x = -r, y = 0, err = 2-2*r, e2;
     do {
         drawPixel(poX-x, poY+y, 1);
@@ -370,23 +388,11 @@ unsigned char ePaper::drawCircle(int poX, int poY, int r)
     } while (x <= 0);
 }
 
-
-/*********************************************************************************************************
-** Function name:           display
-** Descriptions:            you should use this function once after finish drawing
-*********************************************************************************************************/
-unsigned char ePaper::display()
-{
-    start();
-    EPD.image_sd();
-    end();
-}
-
 /*********************************************************************************************************
 ** Function name:           drawHorizontalLine
 ** Descriptions:            drawHorizontalLine
 *********************************************************************************************************/
-unsigned char ePaper::drawHorizontalLine( int poX, int poY, int len)
+void ePaper::drawHorizontalLine( int poX, int poY, int len)
 {
     drawLine(poX, poY, poX+len, poY);
 }
@@ -395,7 +401,7 @@ unsigned char ePaper::drawHorizontalLine( int poX, int poY, int len)
 ** Function name:           drawVerticalLine
 ** Descriptions:            drawVerticalLine
 *********************************************************************************************************/
-unsigned char ePaper::drawVerticalLine( int poX, int poY, int len)
+void ePaper::drawVerticalLine( int poX, int poY, int len)
 {
     drawLine(poX, poY, poX, poY+len);
 }
@@ -404,7 +410,7 @@ unsigned char ePaper::drawVerticalLine( int poX, int poY, int len)
 ** Function name:           drawRectangle
 ** Descriptions:            drawRectangle
 *********************************************************************************************************/
-unsigned char ePaper::drawRectangle(int poX, int poY, int len, int width)
+void ePaper::drawRectangle(int poX, int poY, int len, int width)
 {
     drawHorizontalLine(poX, poY, len);
     drawHorizontalLine(poX, poY+width, len);
@@ -416,9 +422,10 @@ unsigned char ePaper::drawRectangle(int poX, int poY, int len, int width)
 ** Function name:           fillCircle
 ** Descriptions:            fillCircle
 *********************************************************************************************************/
-unsigned char ePaper::fillCircle(int poX, int poY, int r)
+void ePaper::fillCircle(int poX, int poY, int r)
 {
     int x = -r, y = 0, err = 2-2*r, e2;
+    
     do {
 
         drawVerticalLine(poX-x, poY-y, 2*y);
@@ -438,7 +445,7 @@ unsigned char ePaper::fillCircle(int poX, int poY, int r)
 ** Function name:           drawTraingle
 ** Descriptions:            drawTraingle
 *********************************************************************************************************/
-unsigned char ePaper::drawTraingle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3)
+void ePaper::drawTraingle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3)
 {
     drawLine(poX1, poY1, poX2, poY2);
     drawLine(poX1, poY1, poX3, poY3);
@@ -449,12 +456,23 @@ unsigned char ePaper::drawTraingle( int poX1, int poY1, int poX2, int poY2, int 
 ** Function name:           drawTraingle
 ** Descriptions:            drawTraingle
 *********************************************************************************************************/
-unsigned char ePaper::fillRectangle(int poX, int poY, int len, int width)
+void ePaper::fillRectangle(int poX, int poY, int len, int width)
 {
     for(int i=0; i<width; i++)
     {
         drawHorizontalLine(poX, poY+i, len);
     }
+}
+
+/*********************************************************************************************************
+** Function name:           display
+** Descriptions:            you should use this function once after finish drawing
+*********************************************************************************************************/
+unsigned char ePaper::display()
+{
+    start();
+    EPD.image_sd();
+    end();
 }
 
 ePaper EPAPER;

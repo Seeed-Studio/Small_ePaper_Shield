@@ -121,7 +121,7 @@ void EPD_Class::start() {
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
 	digitalWrite(this->EPD_Pin_EPD_CS, LOW);
 
-	 PWM_start(this->EPD_Pin_PWM);
+	PWM_start(this->EPD_Pin_PWM);
 	Delay_ms(5);
 	digitalWrite(this->EPD_Pin_PANEL_ON, HIGH);
 	Delay_ms(10);
@@ -239,20 +239,28 @@ void EPD_Class::start() {
 
 void EPD_Class::end() 
 {
-
-	//this->frame_fixed(0x55, EPD_normal); // dummy frame
-    //delay(50);
-
-	//this->line(0x7fffu, 0, 0x55, false, EPD_normal); // dummy_line
-
-	//Delay_ms(50);dd
-
+	// dummy frame
 #if 0
-	digitalWrite(this->EPD_Pin_BORDER, LOW);
-	Delay_ms(300);
-    digitalWrite(this->EPD_Pin_BORDER, HIGH);
-	
-    delay(200);
+	this->frame_fixed(0x55, EPD_normal);
+#endif
+	// dummy line and border
+	if (EPD_1_44 == this->size) {
+		// only for 1.44" EPD
+		this->line(0x7fffu, 0, 0xaa, false, EPD_normal);
+
+		Delay_ms(250);
+
+	} 
+    else {
+		// all other display sizes
+		this->line(0x7fffu, 0, 0x55, false, EPD_normal);
+
+		Delay_ms(25);
+
+		digitalWrite(this->EPD_Pin_BORDER, LOW);
+		Delay_ms(250);
+		digitalWrite(this->EPD_Pin_BORDER, HIGH);
+	}
 
 	// latch reset turn on
 	Delay_us(10);
@@ -284,7 +292,7 @@ void EPD_Class::end()
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x0c), 2);
 
-	Delay_ms(150);
+	Delay_ms(120);
 
 	// all charge pumps off
 	Delay_us(10);
@@ -304,7 +312,7 @@ void EPD_Class::end()
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x50), 2);
 
-	Delay_ms(50);
+	Delay_ms(40);
 
 	// discharge internal - 2
 	Delay_us(10);
@@ -319,19 +327,18 @@ void EPD_Class::end()
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x00), 2);
-#endif
+
 	// turn of power and all signals
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
+
+	SPI_put(0x00);  // ensure SPI MOSI is Low before CS Low
 	digitalWrite(this->EPD_Pin_EPD_CS, LOW);
 
+	// discharge pulse
 	digitalWrite(this->EPD_Pin_DISCHARGE, HIGH);
-
-	SPI_put(0x00);
-
-	Delay_ms(500);
-
+	Delay_ms(150);
 	digitalWrite(this->EPD_Pin_DISCHARGE, LOW);
 
 }

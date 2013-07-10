@@ -57,12 +57,16 @@ private:
     int SIZE_LEN;
     int SIZE_WIDTH;
     
+    int DISP_LEN;
+    int DISP_WIDTH;
+    
+    
     EPD_DIR direction;
     
 public:
 
     EPD_size size;
-
+    
     void begin(EPD_size sz);
     
     void setDirection(EPD_DIR dir);
@@ -82,23 +86,22 @@ public:
 		eSD.putPixel(x, y, color);
 	}
     
-    unsigned char drawChar(char c, unsigned char x, unsigned char y);
-    unsigned char drawString(char *string, int poX, int poY);
-    unsigned char drawUnicode(unsigned int uniCode, unsigned char x, unsigned char y);
+    int drawChar(char c, int x, int y);
+    int drawString(char *string, int poX, int poY);
+    int drawNumber(long long_num,int poX, int poY);
+    int drawFloat(float floatNumber,int decimal,int poX, int poY);
     
-    unsigned char deawUnicodeString(unsigned int *uniCode, unsigned char len, unsigned char x, unsigned char y);
+    int drawUnicode(unsigned int uniCode, int x, int y);
+    int deawUnicodeString(unsigned int *uniCode, int len, int x, int y);
     
-    unsigned char drawNumber(long long_num,int poX, int poY);
-    unsigned char drawFloat(float floatNumber,unsigned char decimal,unsigned int poX, unsigned int poY);
-    
-    unsigned char drawLine(int x0, int y0, int x1, int y1);
-    unsigned char drawCircle(int poX, int poY, int r);
-    unsigned char drawHorizontalLine( int poX, int poY, int len);
-    unsigned char drawVerticalLine( int poX, int poY, int len);
-    unsigned char drawRectangle(int poX, int poY, int len, int width);
-    unsigned char fillRectangle(int poX, int poY, int len, int width);
-    unsigned char fillCircle(int poX, int poY, int r);
-    unsigned char drawTraingle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
+    void drawLine(int x0, int y0, int x1, int y1);
+    void drawCircle(int poX, int poY, int r);
+    void drawHorizontalLine( int poX, int poY, int len);
+    void drawVerticalLine( int poX, int poY, int len);
+    void drawRectangle(int poX, int poY, int len, int width);
+    void fillRectangle(int poX, int poY, int len, int width);
+    void fillCircle(int poX, int poY, int r);
+    void drawTraingle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
 };
 
 extern ePaper EPAPER;
