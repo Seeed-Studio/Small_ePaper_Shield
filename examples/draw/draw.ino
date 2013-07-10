@@ -8,7 +8,7 @@
 #include "GT20L16_drive.h"
 #include <Streaming.h>
 
-#define SCREEN_SIZE 200                 // choose screen size: 144, 200, 270
+#define SCREEN_SIZE 270                 // choose screen size: 144, 200, 270
 
 #if (SCREEN_SIZE == 144)
 #define EPD_SIZE    EPD_1_44

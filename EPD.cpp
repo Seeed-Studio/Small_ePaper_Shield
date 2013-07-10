@@ -242,7 +242,7 @@ void EPD_Class::end()
 	// dummy frame
 #if 0
 	this->frame_fixed(0x55, EPD_normal);
-#endif
+//#endif
 	// dummy line and border
 	if (EPD_1_44 == this->size) {
 		// only for 1.44" EPD
@@ -327,7 +327,7 @@ void EPD_Class::end()
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x00), 2);
-
+#endif
 	// turn of power and all signals
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
@@ -391,6 +391,7 @@ void EPD_Class::frame_data(PROGMEM const uint8_t *image, EPD_stage stage)
 	}
 }
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 void EPD_Class::frame_data_sd(EPD_stage stage)
 {
 	for (uint8_t line = 0; line < this->lines_per_display ; ++line) 
@@ -399,11 +400,13 @@ void EPD_Class::frame_data_sd(EPD_stage stage)
 		this->line(line, lineDta, 0, 0, stage);
 	}
 }
-
+#endif
 
 #if defined(EPD_ENABLE_EXTRA_SRAM)
-void EPD_Class::frame_sram(const uint8_t *image, EPD_stage stage){
-	for (uint8_t line = 0; line < this->lines_per_display ; ++line) {
+void EPD_Class::frame_sram(const uint8_t *image, EPD_stage stage)
+{
+	for (uint8_t line = 0; line < this->lines_per_display ; ++line) 
+    {
 		this->line(line, &image[line * this->bytes_per_line], 0, false, stage);
 	}
 }
@@ -463,6 +466,7 @@ void EPD_Class::frame_data_repeat(PROGMEM const uint8_t *image, EPD_stage stage)
 #endif
 }
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 void EPD_Class::frame_data_repeat_sd(EPD_stage stage) 
 {
 
@@ -481,11 +485,13 @@ void EPD_Class::frame_data_repeat_sd(EPD_stage stage)
 		}
     }
 }
-
-
+#endif
 
 #if defined(EPD_ENABLE_EXTRA_SRAM)
-void EPD_Class::frame_sram_repeat(const uint8_t *image, EPD_stage stage) {
+void EPD_Class::frame_sram_repeat(const uint8_t *image, EPD_stage stage) 
+{
+
+#if 0
 	long stage_time = this->factored_stage_time;
 	do {
 		unsigned long t_start = millis();
@@ -497,6 +503,9 @@ void EPD_Class::frame_sram_repeat(const uint8_t *image, EPD_stage stage) {
 			stage_time -= t_start - t_end + 1 + ULONG_MAX;
 		}
 	} while (stage_time > 0);
+#else
+    for(int i=0; i<7; i++)this->frame_sram(image, stage);
+#endif
 }
 #endif
 
@@ -652,6 +661,7 @@ void EPD_Class::line(uint16_t line, const uint8_t *data, uint8_t fixed_value, bo
     
 }
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 void EPD_Class::line_sd(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage) 
 {
 	// charge pump voltage levels
@@ -788,7 +798,7 @@ void EPD_Class::line_sd(uint16_t line, const uint8_t *data, uint8_t fixed_value,
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x2f), 2);
 }
-
+#endif
 
 
 static void SPI_put(uint8_t c) {

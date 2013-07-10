@@ -108,17 +108,6 @@ void ePaper::end()
 }
 
 /*********************************************************************************************************
-** Function name:           end
-** Descriptions:            read image from flash
-*********************************************************************************************************/
-void ePaper::image_flash(PROGMEM const unsigned char *image)
-{
-    start();
-    EPD.image(image);
-    end();
-} 
-
-/*********************************************************************************************************
 ** Function name:           init_io
 ** Descriptions:            init IO
 *********************************************************************************************************/
@@ -137,14 +126,14 @@ void ePaper::init_io()
     digitalWrite(Pin_PANEL_ON, LOW);
     digitalWrite(Pin_DISCHARGE, LOW);
     digitalWrite(Pin_BORDER, LOW);
-    digitalWrite(Pin_EPD_CS, LOW);
+    digitalWrite(Pin_EPD_CS, HIGH);
     digitalWrite(Pin_SD_CS, HIGH);
     
     // init SPI
     SPI.begin();
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
-    //SPI.setClockDivider(SPI_CLOCK_DIV4);
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
 }
 
 /*********************************************************************************************************
@@ -471,7 +460,11 @@ void ePaper::fillRectangle(int poX, int poY, int len, int width)
 unsigned char ePaper::display()
 {
     start();
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     EPD.image_sd();
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+    EPD.image_sram(eSD.sram_image);
+#endif
     end();
 }
 

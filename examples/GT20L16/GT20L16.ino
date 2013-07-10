@@ -41,6 +41,7 @@ void dispMatrixs(int len, unsigned int *unicode)
         int dtaLen = GT20L16.getMatrixUnicode(unicode[i], matrix);
         dispMatrix(dtaLen, matrix);
         Serial.println();
+        delay(20);
     }
 }
 

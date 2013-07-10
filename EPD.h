@@ -102,6 +102,7 @@ class EPD_Class
         this->frame_data_repeat(image, EPD_normal);
     }
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     void image_sd()
     {
         this->frame_fixed_repeat(0xaa, EPD_compensate);
@@ -109,7 +110,7 @@ class EPD_Class
         this->frame_data_repeat_sd(EPD_inverse);
         this->frame_data_repeat_sd(EPD_normal);
     }
-
+#endif
     // change from old image to new image (PROGMEM data)
     void image(PROGMEM const uint8_t *old_image, PROGMEM const uint8_t *new_image)
     {
@@ -120,11 +121,11 @@ class EPD_Class
     }
 
 #if defined(EPD_ENABLE_EXTRA_SRAM)
-
     // change from old image to new image (SRAM version)
-    void image_sram(const uint8_t *old_image, const uint8_t *new_image) {
-        this->frame_sram_repeat(old_image, EPD_compensate);
-        this->frame_sram_repeat(old_image, EPD_white);
+    void image_sram(unsigned char *new_image) 
+    {
+        this->frame_fixed_repeat(0xaa, EPD_compensate);
+        this->frame_fixed_repeat(0xaa, EPD_white);
         this->frame_sram_repeat(new_image, EPD_inverse);
         this->frame_sram_repeat(new_image, EPD_normal);
     }
@@ -136,8 +137,9 @@ class EPD_Class
     // single frame refresh
     void frame_fixed(uint8_t fixed_value, EPD_stage stage);
     void frame_data(PROGMEM const uint8_t *new_image, EPD_stage stage);
-
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     void frame_data_sd(EPD_stage stage);
+#endif
 
 #if defined(EPD_ENABLE_EXTRA_SRAM)
     void frame_sram(const uint8_t *new_image, EPD_stage stage);
@@ -147,7 +149,10 @@ class EPD_Class
     // stage_time frame refresh
     void frame_fixed_repeat(uint8_t fixed_value, EPD_stage stage);
     void frame_data_repeat(PROGMEM const uint8_t *new_image, EPD_stage stage);
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     void frame_data_repeat_sd(EPD_stage stage);
+#endif
+
 #if defined(EPD_ENABLE_EXTRA_SRAM)
     void frame_sram_repeat(const uint8_t *new_image, EPD_stage stage);
 #endif
@@ -159,9 +164,9 @@ class EPD_Class
     // single line display - very low-level
     // also has to handle AVR progmem
     void line(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage);
-
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     void line_sd(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage);
-
+#endif
 };
 
 extern EPD_Class EPD;

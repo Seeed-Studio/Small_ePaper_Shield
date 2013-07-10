@@ -81,7 +81,7 @@ int GT20L16_drive::getMatrixUnicode(unsigned int uniCode, unsigned char *matrix)
 
         tempdata=SPI.transfer(0x00);
         matrix[i]=(tempdata);   /*save dot matrix data in matrixdata[i]*/
-        delay(10);
+        delay(5);
     }
     SPI.setBitOrder(MSBFIRST);
     GT_UnSelect();

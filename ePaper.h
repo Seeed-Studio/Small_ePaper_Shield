@@ -79,7 +79,21 @@ public:
     
     unsigned char display();                // refresh 
     
-    void image_flash(PROGMEM const unsigned char *image);           // read image from flash
+    void image_flash(PROGMEM const unsigned char *image)           // read image from flash
+    {
+        start();
+        EPD.image(image);
+        end();
+    } 
+    
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+    void image_sram(unsigned char *image)
+    {
+        start();
+        EPD.image_sram(image);
+        end();
+    }
+#endif
     
     inline void drawPixel(unsigned char x, unsigned char y, unsigned char color)
     {

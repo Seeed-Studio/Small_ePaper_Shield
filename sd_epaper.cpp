@@ -36,7 +36,7 @@
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
-unsigned char sd_epaper::begin(unsigned char pinCs, EPD_size sz)
+void sd_epaper::begin(EPD_size sz)
 {
 
     openFileTime = 1;
@@ -68,20 +68,21 @@ unsigned char sd_epaper::begin(unsigned char pinCs, EPD_size sz)
     DISP_WIDTH  = SIZE_WIDTH;
     
     LINE_BYTE = SIZE_LEN/8;
-    
-    while(!SD.begin(pinCs))
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
+    while(!SD.begin(Pin_SD_CS))
     {
         println_sd("sd card initialization failed!");
         delay(100);
     }
-    
+
     println_sd("initialization done.");
     
     openFile();
-    
+#endif
     clear();
 
 }
+
 
 void sd_epaper::setDirection(EPD_DIR dir)
 {
@@ -94,7 +95,7 @@ void sd_epaper::setDirection(EPD_DIR dir)
     }
 }
 
-
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 unsigned char sd_epaper::openFile()
 {
     new_image = SD.open(NEWIMAGENAME, FILE_WRITE);
@@ -107,27 +108,29 @@ unsigned char sd_epaper::closeFile()
 {
     new_image.close();
 }
-
+#endif
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 {
     new_image.seek(line*LINE_BYTE);
     new_image.write(dta, LINE_BYTE);
 }
-
+#endif
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 {
     new_image.seek(line*LINE_BYTE);
     new_image.read(dta, LINE_BYTE);
 }
-
+#endif
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
@@ -170,6 +173,7 @@ void sd_epaper::putPixel(int x, int y, unsigned char pixel)
     
     int mask = 0x01 << bit;
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     new_image.seek(byte);
     unsigned char tmp = new_image.read();
 
@@ -189,6 +193,20 @@ void sd_epaper::putPixel(int x, int y, unsigned char pixel)
 
     new_image.seek(byte);
     new_image.write(tmp);
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+
+    if (BLACK == pixel)
+    {
+        sram_image[byte] |= mask;
+    }
+    else
+    {
+        sram_image[byte] &= ~mask;
+    }
+
+#else
+
+#endif
 
 }
 
@@ -196,6 +214,7 @@ void sd_epaper::putPixel(int x, int y, unsigned char pixel)
 ** Function name:           begin
 ** Descriptions:            begin
 *********************************************************************************************************/
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 void sd_epaper::getPixel(int x, int y)
 {
 
@@ -211,7 +230,7 @@ void sd_epaper::getPixel(int x, int y)
     else tmp = WHITE;
 
 }
-
+#endif
 
 /*********************************************************************************************************
 ** Function name:           begin
@@ -219,6 +238,8 @@ void sd_epaper::getPixel(int x, int y)
 *********************************************************************************************************/
 unsigned char sd_epaper::clear()
 {
+
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     new_image.seek(0);
     memset(lineDta, 0x00, LINE_BYTE);
 
@@ -226,6 +247,11 @@ unsigned char sd_epaper::clear()
     {
         new_image.write(lineDta, LINE_BYTE);
     }
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+    memset(sram_image, 0x00, 5808);
+#else
+
+#endif
 }
 
 

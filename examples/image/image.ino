@@ -9,7 +9,7 @@
 
 #define PINCSGT         9
 
-#define SCREEN_SIZE 200
+#define SCREEN_SIZE 270
 
 // set up images from screen size2
 #if (SCREEN_SIZE == 144)
