@@ -6,24 +6,19 @@
   www.seeedstudio.com
   2013-7-2
 
-  Copyright 2013 Pervasive Displays, Inc.
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at:
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  http://www.apache.org/licenses/LICENSE-2.0
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-  express or implied.  See the License for the specific language
-  governing permissions and limitations under the License.
-
-  This program is to illustrate the display operation as described in
-  the datasheets.  The code is in a simple linear fashion and all the
-  delays are set to maximum, but the SPI clock is set lower than its
-  limit.  Therfore the display sequence will be much slower than
-  normal and all of the individual display stages be clearly visible.
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #ifndef __EPAPER_H__
