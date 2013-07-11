@@ -12,9 +12,8 @@
 #include "GT20L16_drive.h"
 #include "picture.h"
 
-#define SCREEN_SIZE 270
+#define SCREEN_SIZE 270             // choose screen size here: 144, 200, 270
 
-// set up images from screen size2
 #if (SCREEN_SIZE == 144)
 #define EPD_SIZE    EPD_1_44
 #define IMAGEFILE   image_144

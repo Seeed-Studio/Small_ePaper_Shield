@@ -55,7 +55,6 @@ private:
     int DISP_LEN;
     int DISP_WIDTH;
     
-    
     EPD_DIR direction;
     
 public:

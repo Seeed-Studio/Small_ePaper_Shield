@@ -26,7 +26,6 @@
 #include "sd_epaper.h"
 #include "ePaperDfs.h"
 
-
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
@@ -96,7 +95,6 @@ unsigned char sd_epaper::openFile()
     new_image = SD.open(NEWIMAGENAME, FILE_WRITE);
     if(new_image)println_sd("new_image open ok");
     else println_sd("new_image_open err: ");
-
 }
 
 unsigned char sd_epaper::closeFile()
@@ -221,7 +219,6 @@ void sd_epaper::getPixel(int x, int y)
 
     if(tmp & (0x01 << bit))tmp = BLACK;
     else tmp = WHITE;
-
 }
 #endif
 
@@ -231,7 +228,6 @@ void sd_epaper::getPixel(int x, int y)
 *********************************************************************************************************/
 unsigned char sd_epaper::clear()
 {
-
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     new_image.seek(0);
     memset(lineDta, 0x00, LINE_BYTE);
@@ -244,7 +240,6 @@ unsigned char sd_epaper::clear()
     memset(sram_image, 0x00, 5808);
 #endif
 }
-
 
 sd_epaper eSD;
 

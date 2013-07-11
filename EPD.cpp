@@ -346,7 +346,8 @@ void EPD_Class::end()
 
 // convert a temperature in Celcius to
 // the scale factor for frame_*_repeat methods
-int EPD_Class::temperature_to_factor_10x(int temperature) {
+int EPD_Class::temperature_to_factor_10x(int temperature) 
+{
 	if (temperature <= -10) {
 		return 170;
 	} else if (temperature <= -5) {
@@ -381,7 +382,6 @@ void EPD_Class::frame_fixed(uint8_t fixed_value, EPD_stage stage)
 		this->line(line, 0, fixed_value, false, stage);
 	}
 }
-
 
 void EPD_Class::frame_data(PROGMEM const uint8_t *image, EPD_stage stage)
 {
