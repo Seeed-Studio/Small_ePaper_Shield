@@ -63,6 +63,9 @@ void ePaper::begin(EPD_size sz)
     init_io();
 }
 
+void ePaper::spi_detach()
+{
+}
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            begin
@@ -116,6 +119,8 @@ void ePaper::init_io()
     pinMode(Pin_BORDER, OUTPUT);
     pinMode(Pin_EPD_CS, OUTPUT);
     pinMode(Pin_SD_CS, OUTPUT);
+    pinMode(9, OUTPUT);
+    digitalWrite(9, HIGH);
 
     digitalWrite(Pin_RESET, LOW);
     digitalWrite(Pin_PANEL_ON, LOW);

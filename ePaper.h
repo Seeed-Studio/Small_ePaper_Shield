@@ -79,7 +79,15 @@ public:
         EPD.image(image);
         end();
     } 
-    
+ 
+    void clear()                             // clear display
+    {
+        start();
+        EPD.clear();
+        end();
+    } 
+   
+    void spi_detach();
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
     void image_sram(unsigned char *image)
     {

@@ -37,6 +37,9 @@ static void PWM_stop(int pin);
 static void SPI_put(uint8_t c);
 static void SPI_put_wait(uint8_t c, int busy_pin);
 static void SPI_send(uint8_t cs_pin, const uint8_t *buffer, uint16_t length);
+static void SPI_on();
+static void SPI_off();
+
 
 void EPD_Class::begin(EPD_size sz)
 {
@@ -113,14 +116,15 @@ void EPD_Class::begin(EPD_size sz)
 void EPD_Class::start() {
 
 	// power up sequence
-	SPI_put(0x00);
+	//SPI_put(0x00);
 
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
 	digitalWrite(this->EPD_Pin_DISCHARGE, LOW);
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
 	digitalWrite(this->EPD_Pin_EPD_CS, LOW);
-
+    
+    SPI_on();
 	PWM_start(this->EPD_Pin_PWM);
 	Delay_ms(5);
 	digitalWrite(this->EPD_Pin_PANEL_ON, HIGH);
@@ -232,17 +236,14 @@ void EPD_Class::start() {
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x24), 2);
     
-    delay(200);
-
+    SPI_off();
 }
 
 
 void EPD_Class::end() 
 {
 	// dummy frame
-#if 0
 	this->frame_fixed(0x55, EPD_normal);
-//#endif
 	// dummy line and border
 	if (EPD_1_44 == this->size) {
 		// only for 1.44" EPD
@@ -261,7 +262,7 @@ void EPD_Class::end()
 		Delay_ms(250);
 		digitalWrite(this->EPD_Pin_BORDER, HIGH);
 	}
-
+    SPI_on();
 	// latch reset turn on
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x03), 2);
@@ -327,14 +328,13 @@ void EPD_Class::end()
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x00), 2);
-#endif
 	// turn of power and all signals
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
 
-	SPI_put(0x00);  // ensure SPI MOSI is Low before CS Low
-	digitalWrite(this->EPD_Pin_EPD_CS, LOW);
+    SPI_off();
+//	digitalWrite(this->EPD_Pin_EPD_CS, LOW);
 
 	// discharge pulse
 	digitalWrite(this->EPD_Pin_DISCHARGE, HIGH);
@@ -445,7 +445,7 @@ void EPD_Class::frame_data_repeat(PROGMEM const uint8_t *image, EPD_stage stage)
 
 	long stage_time = this->factored_stage_time;
 
-#if 0
+#if 1 
 
 	do {
 		unsigned long t_start = millis();
@@ -491,7 +491,7 @@ void EPD_Class::frame_data_repeat_sd(EPD_stage stage)
 void EPD_Class::frame_sram_repeat(const uint8_t *image, EPD_stage stage) 
 {
 
-#if 0
+#if 1 
 	long stage_time = this->factored_stage_time;
 	do {
 		unsigned long t_start = millis();
@@ -528,7 +528,8 @@ void EPD_Class::frame_cb_repeat(uint32_t address, EPD_reader *reader, EPD_stage 
 void EPD_Class::line(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage) 
 {
 	// charge pump voltage levels
-	Delay_us(10);
+    SPI_on();
+    Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, this->gate_source, this->gate_source_length);
@@ -658,13 +659,14 @@ void EPD_Class::line(uint16_t line, const uint8_t *data, uint8_t fixed_value, bo
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x02), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x2f), 2);
-    
+    SPI_off();    
 }
 
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 void EPD_Class::line_sd(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage) 
 {
 	// charge pump voltage levels
+    SPI_on();
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x04), 2);
 	Delay_us(10);
@@ -797,10 +799,40 @@ void EPD_Class::line_sd(uint16_t line, const uint8_t *data, uint8_t fixed_value,
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x02), 2);
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x2f), 2);
+    SPI_off();
 }
+
 #endif
 
+static void SPI_on() {
+    SPI.end();
+    SPI.begin();
+    //SPI.setBitOrder(MSBFIRST);
+    //SPI.setDataMode(SPI_MODE2);
+    SPI.setClockDivider(SPI_CLOCK_DIV4);
+    SPI_put(0x00);
+    SPI_put(0x00);
+    Delay_us(10);
+}
 
+static void SPI_off() {
+// SPI.begin();
+// SPI.setBitOrder(MSBFIRST);
+// SPI.setDataMode(SPI_MODE0);
+// SPI.setClockDivider(SPI_CLOCK_DIV2);
+    SPI_put(0x00);
+    SPI_put(0x00);
+    Delay_us(10);
+    SPI.end();
+
+    pinMode(SCK, OUTPUT);
+    pinMode(MOSI, OUTPUT);
+    pinMode(MISO, OUTPUT);
+    digitalWrite(SCK, LOW);
+    digitalWrite(MOSI, LOW);
+    digitalWrite(MISO, LOW);
+}
+             
 static void SPI_put(uint8_t c) {
 	SPI.transfer(c);
 }
