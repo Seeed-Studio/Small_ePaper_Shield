@@ -39,7 +39,7 @@ static void SPI_put_wait(uint8_t c, int busy_pin);
 static void SPI_send(uint8_t cs_pin, const uint8_t *buffer, uint16_t length);
 static void SPI_on();
 static void SPI_off();
-
+static void SPI_off_final();
 
 void EPD_Class::begin(EPD_size sz)
 {
@@ -329,16 +329,19 @@ void EPD_Class::end()
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x72, 0x00), 2);
 	// turn of power and all signals
+    //
+
+    delay(10);
 	digitalWrite(this->EPD_Pin_RESET, LOW);
 	digitalWrite(this->EPD_Pin_PANEL_ON, LOW);
 	digitalWrite(this->EPD_Pin_BORDER, LOW);
 
-    SPI_off();
+    SPI_off_final();
 //	digitalWrite(this->EPD_Pin_EPD_CS, LOW);
 
 	// discharge pulse
 	digitalWrite(this->EPD_Pin_DISCHARGE, HIGH);
-	Delay_ms(150);
+	Delay_ms(250);
 	digitalWrite(this->EPD_Pin_DISCHARGE, LOW);
 
 }
@@ -809,7 +812,7 @@ static void SPI_on() {
     SPI.begin();
     //SPI.setBitOrder(MSBFIRST);
     //SPI.setDataMode(SPI_MODE2);
-    SPI.setClockDivider(SPI_CLOCK_DIV4);
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPI_put(0x00);
     SPI_put(0x00);
     Delay_us(10);
@@ -820,6 +823,20 @@ static void SPI_off() {
 // SPI.setBitOrder(MSBFIRST);
 // SPI.setDataMode(SPI_MODE0);
 // SPI.setClockDivider(SPI_CLOCK_DIV2);
+#if 0
+    SPI_put(0x00);
+    SPI_put(0x00);
+    Delay_us(10);
+    SPI.end();
+#else
+    SPI_off_final();
+#endif
+
+}
+             
+static void SPI_off_final()
+{
+    
     SPI_put(0x00);
     SPI_put(0x00);
     Delay_us(10);
@@ -832,7 +849,7 @@ static void SPI_off() {
     digitalWrite(MOSI, LOW);
     digitalWrite(MISO, LOW);
 }
-             
+
 static void SPI_put(uint8_t c) {
 	SPI.transfer(c);
 }
