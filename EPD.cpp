@@ -243,7 +243,7 @@ void EPD_Class::start() {
 void EPD_Class::end() 
 {
 	// dummy frame
-	this->frame_fixed(0x55, EPD_normal);
+	//this->frame_fixed(0x55, EPD_normal);
 	// dummy line and border
 	if (EPD_1_44 == this->size) {
 		// only for 1.44" EPD
@@ -399,6 +399,7 @@ void EPD_Class::frame_data_sd(EPD_stage stage)
 {
 	for (uint8_t line = 0; line < this->lines_per_display ; ++line) 
     {
+        SPI_on();
         eSD.getLine(line, lineDta);
 		this->line(line, lineDta, 0, 0, stage);
 	}
