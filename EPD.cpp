@@ -243,7 +243,7 @@ void EPD_Class::start() {
 void EPD_Class::end() 
 {
 	// dummy frame
-	this->frame_fixed(0x55, EPD_normal);
+	//this->frame_fixed(0x55, EPD_normal);
 	// dummy line and border
 	if (EPD_1_44 == this->size) {
 		// only for 1.44" EPD
