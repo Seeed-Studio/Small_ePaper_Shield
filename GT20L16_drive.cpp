@@ -26,6 +26,15 @@
 
 #include "GT20L16_drive.h"
 
+
+static void spi_on()
+{
+    SPI.begin();
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI_put(0x00);
+    //SPI_put(0x00);
+}
+
 /*********************************************************************************************************
 ** Function name:           begin
 ** Descriptions:            init IO
@@ -49,6 +58,7 @@ int GT20L16_drive::getMatrixUnicode(unsigned int uniCode, unsigned char *matrix)
     
     unsigned char dtaLen = 0;
     
+    //spi_on();
     if(uniCode <= 45632 )
     {
         dtaLen = 16;

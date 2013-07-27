@@ -26,6 +26,15 @@
 #include "GT20L16_drive.h"
 #include "ePaper.h"
 
+
+static void spi_on()
+{
+    SPI.begin();
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI_put(0x00);
+    //SPI_put(0x00);
+}
+
 /*********************************************************************************************************
 * \brief According to EPD size and temperature to get stage_time
 * \note Refer to COG document Section 5.3 for more details
@@ -168,7 +177,7 @@ int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
     int pX      = 0;
     int pY      = 0;
     int color   = 0;
-
+    //spi_on();
     for(int k = 0; k<2; k++)
     {
         for(int i=0; i<8; i++)
@@ -204,6 +213,7 @@ int ePaper::deawUnicodeString(unsigned int *uniCode, int len, int x, int y)
 {
     int xPlus = 0;
     int xSum  = 0;
+    
     for(int i=0; i<len; i++)
     {
         xPlus = drawUnicode(uniCode[i], x, y);
@@ -332,6 +342,7 @@ void ePaper::drawLine(int x0, int y0, int x1, int y1)
     //if(x0>DISP_LEN || x1>DISP_LEN || y0>DISP_WIDTH || y1>DISP_WIDTH)return;
     //if(x0<0 || x1<0 || y0<0 || y1<0)return;
     
+    //spi_on();
     int x = x1-x0;
     int y = y1-y0;
     int dx = abs(x), sx = x0<x1 ? 1 : -1;
@@ -362,6 +373,7 @@ void ePaper::drawCircle(int poX, int poY, int r)
 {
    // if(poX<0 || poY<0 || r<=0)return;
 
+    //spi_on();
     int x = -r, y = 0, err = 2-2*r, e2;
     do {
         drawPixel(poX-x, poY+y, 1);

@@ -43,7 +43,7 @@ void sd_epaper::begin(EPD_size sz)
 
     openFileTime = 1;
     closeFileTime = 1;
-    
+    //spi_on();
     switch(sz)
     {
         case EPD_1_44:              // 128*96
@@ -100,6 +100,7 @@ void sd_epaper::setDirection(EPD_DIR dir)
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 unsigned char sd_epaper::openFile()
 {
+    //spi_on();
     new_image = SD.open(NEWIMAGENAME, FILE_WRITE);
     if(new_image)println_sd("new_image open ok");
     else println_sd("new_image_open err: ");
@@ -117,6 +118,7 @@ unsigned char sd_epaper::closeFile()
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 {
+    //spi_on();
     new_image.seek(line*LINE_BYTE);
     new_image.write(dta, LINE_BYTE);
 }
@@ -128,6 +130,7 @@ unsigned char sd_epaper::putLine(int line, unsigned char *dta)
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
 unsigned char sd_epaper::getLine(int line, unsigned char *dta)
 {
+    //spi_on();
     new_image.seek(line*LINE_BYTE);
     new_image.read(dta, LINE_BYTE);
 }
@@ -236,6 +239,7 @@ void sd_epaper::getPixel(int x, int y)
 *********************************************************************************************************/
 unsigned char sd_epaper::clear()
 {
+    //spi_on();
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     new_image.seek(0);
     memset(lineDta, 0x00, LINE_BYTE);
