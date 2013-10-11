@@ -1,47 +1,52 @@
 #######################################
-# Syntax Coloring Map For debug_lvc
+# Syntax Coloring Map For ePaper
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
-MCP_CAN	KEYWORD1
-CAN	KEYWORD1
-mcp_can_dfs	KEYWORD1
-mcp_can	KEYWORD1
+ePaper	KEYWORD1
+GT20L16_drive	KEYWORD1
+EPAPER	KEYWORD1
+eSD	KEYWORD1
+GT20L16	KEYWORD1
+
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-begin	KEYWORD2
-init_Mask	KEYWORD2
-init_Filt	KEYWORD2
-sendMsgBuf	KEYWORD2
-readMsgBuf	KEYWORD2
-checkReceive	KEYWORD2
-checkError	KEYWORD2
-getCanId	KEYWORD2
+clear_sd	KEYWORD2
+setDirection	KEYWORD2
+start	KEYWORD2
+end	KEYWORD2
+init_io	KEYWORD2
+display	KEYWORD2
+image_flash	KEYWORD2
+clear	KEYWORD2
+deawUnicodeString	KEYWORD2
+drawPixel	KEYWORD2
+drawChar	KEYWORD2
+drawString	KEYWORD2
+drawNumber	KEYWORD2
+drawFloat	KEYWORD2
+drawUnicode	KEYWORD2
+drawUnicodeString	KEYWORD2
+drawLine	KEYWORD2
+drawCircle	KEYWORD2
+drawHorizontalLine	KEYWORD2
+drawVerticalLine	KEYWORD2
+drawRectangle	KEYWORD2
+fillRectangle	KEYWORD2
+fillCircle	KEYWORD2
+drawTraingle	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-CAN_5KBPS	LITERAL1
-CAN_10KBPS	LITERAL1
-CAN_20KBPS	LITERAL1
-CAN_40KBPS	LITERAL1
-CAN_50KBPS	LITERAL1
-CAN_80KBPS	LITERAL1
-CAN_100KBPS	LITERAL1
-CAN_125KBPS	LITERAL1
-CAN_200KBPS	LITERAL1
-CAN_250KBPS	LITERAL1
-CAN_500KBPS	LITERAL1
-CAN_OK	LITERAL1
-CAN_FAILINIT	LITERAL1
-CAN_FAILTX	LITERAL1
-CAN_MSGAVAIL	LITERAL1
-CAN_NOMSG	LITERAL1
-CAN_CTRLERROR	LITERAL1
-CAN_GETTXBFTIMEOUT	LITERAL1
-CAN_SENDMSGTIMEOUT	LITERAL1
-CAN_FAIL	LITERAL1
+EPD_1_44	LITERAL1
+EPD_2_0	LITERAL1
+EPD_2_7	LITERAL1
+DIRNORMAL	LITERAL1
+DIRLEFT	LITERAL1
+DIRRIGHT	LITERAL1
+DIRDOWN	LITERAL1

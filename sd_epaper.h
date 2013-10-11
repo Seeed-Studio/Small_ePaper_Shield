@@ -37,7 +37,7 @@
 #define BLACK   1
 #define WHITE   0
 
-#define SD_DEBUG            1
+#define SD_DEBUG            0
 
 #if SD_DEBUG
 #define print_sd(X)         Serial.print(X)

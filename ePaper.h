@@ -114,7 +114,7 @@ public:
     int drawFloat(float floatNumber,int decimal,int poX, int poY);
     
     int drawUnicode(unsigned int uniCode, int x, int y);
-    int deawUnicodeString(unsigned int *uniCode, int len, int x, int y);
+    int drawUnicodeString(unsigned int *uniCode, int len, int x, int y);
     
     void drawLine(int x0, int y0, int x1, int y1);
     void drawCircle(int poX, int poY, int r);

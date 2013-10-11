@@ -146,8 +146,8 @@ void ePaper::init_io()
 }
 
 /*********************************************************************************************************
-** Function name:           init_io
-** Descriptions:            init IO
+** Function name:           getTemperature
+** Descriptions:            get temperature of sensor
 *********************************************************************************************************/
 int ePaper::getTemperature()
 {
@@ -164,8 +164,8 @@ int ePaper::getTemperature()
 }
 
 /*********************************************************************************************************
-** Function name:           init_io
-** Descriptions:            init IO
+** Function name:           drawUnicode
+** Descriptions:            draw a unicode
 *********************************************************************************************************/
 int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
 {
@@ -209,10 +209,10 @@ int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
 }
 
 /*********************************************************************************************************
-** Function name:           init_io
-** Descriptions:            init IO
+** Function name:           drawUnicodeString
+** Descriptions:            draw string
 *********************************************************************************************************/
-int ePaper::deawUnicodeString(unsigned int *uniCode, int len, int x, int y)
+int ePaper::drawUnicodeString(unsigned int *uniCode, int len, int x, int y)
 {
     int xPlus = 0;
     int xSum  = 0;
@@ -228,7 +228,7 @@ int ePaper::deawUnicodeString(unsigned int *uniCode, int len, int x, int y)
 
 /*********************************************************************************************************
 ** Function name:           drawChar
-** Descriptions:            initdrawCharIO
+** Descriptions:            draw char
 *********************************************************************************************************/
 int ePaper::drawChar(char c, int x, int y)
 {
@@ -236,8 +236,8 @@ int ePaper::drawChar(char c, int x, int y)
 }
 
 /*********************************************************************************************************
-** Function name:           drawChar
-** Descriptions:            initdrawCharIO
+** Function name:           drawString
+** Descriptions:            draw string
 *********************************************************************************************************/
 int ePaper::drawString(char *string, int poX, int poY)
 {
@@ -272,8 +272,8 @@ int ePaper::drawNumber(long long_num,int poX, int poY)
 }
 
 /*********************************************************************************************************
-** Function name:           init_io
-** Descriptions:            init IO
+** Function name:           drawFloat
+** Descriptions:            drawFloat
 *********************************************************************************************************/
 int ePaper::drawFloat(float floatNumber, int decimal, int poX, int poY)
 {
@@ -342,14 +342,8 @@ int ePaper::drawFloat(float floatNumber, int decimal, int poX, int poY)
 *********************************************************************************************************/
 void ePaper::drawLine(int x0, int y0, int x1, int y1)
 {
-    
-    //if(x0>DISP_LEN || x1>DISP_LEN || y0>DISP_WIDTH || y1>DISP_WIDTH)return;
-    //if(x0<0 || x1<0 || y0<0 || y1<0)return;
-    
-    //spi_on();
-    
+
     init_io();
-    
     
     int x = x1-x0;
     int y = y1-y0;
@@ -373,6 +367,11 @@ void ePaper::drawLine(int x0, int y0, int x1, int y1)
     }
 }
 
+
+/*********************************************************************************************************
+** Function name:           clear_sd
+** Descriptions:            clear sd card
+*********************************************************************************************************/
 void ePaper::clear_sd()
 {
     
@@ -388,17 +387,13 @@ void ePaper::clear_sd()
     }
 }
 
-
 /*********************************************************************************************************
 ** Function name:           drawCircle
 ** Descriptions:            drawCircle
 *********************************************************************************************************/
 void ePaper::drawCircle(int poX, int poY, int r)
 {
-   // if(poX<0 || poY<0 || r<=0)return;
 
-    //spi_on();
-    
     init_io();
     int x = -r, y = 0, err = 2-2*r, e2;
     do {

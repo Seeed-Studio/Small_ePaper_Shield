@@ -6,7 +6,7 @@
   
   note: if you use an Arduin UNO, Seeeduino 3.0 (any board that use Atmega 328P or 32U4) 
         you should insert an SD card if you want to use this demo
-        but, if you use an Arduino Mega(any board that use Atmega1280 or Atmega2560), you neen't
+        when you use an Arduino Mega(any board that use Atmega1280 or Atmega2560), you neen't
         insert an SD card for this demo
 -------------------------------------------------------------------------------------------*/ 
 
@@ -51,7 +51,15 @@ void setup()
     EPAPER.drawHorizontalLine(120, 50, 60);
     EPAPER.drawVerticalLine(150, 20, 60);
     
-    EPAPER.display();                                   // display, you can use this function once
+    EPAPER.display();                                   // display, you can use this function
+    
+    
+    delay(1000);
+    EPAPER.clear_sd();                                  // clear sd card data(when use display next time, display is clear)
+    EPAPER.drawString("all clean!", 10, 10);
+    
+    EPAPER.display();
+    
 }
 
 void loop()
