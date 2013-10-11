@@ -101,7 +101,6 @@ void ePaper::start()
     
     int tmp = getTemperature();
     Serial.print("temperature: ");
-    Serial.println(tmp);
     EPD.setFactor(getTemperature());         // adjust for current temperature
 }
 
@@ -172,8 +171,10 @@ int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
 {
     
    // if(((x+16)>= DISP_LEN) || ((y+16) >= DISP_WIDTH) || x<0 || y<0) return 0;
-    
+   
+
     int dtaLen = GT20L16.getMatrixUnicode(uniCode, tMatrix);
+
 
     int pX      = 0;
     int pY      = 0;
@@ -198,7 +199,8 @@ int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
                 pX = x + j;
                 pY = y + k*8+i;
                 
-                EPAPER.drawPixel(pX, pY, color);
+                
+                drawPixel(pX, pY, color);
             }
         }
     }
@@ -240,6 +242,7 @@ int ePaper::drawChar(char c, int x, int y)
 int ePaper::drawString(char *string, int poX, int poY)
 {
     int sumX = 0;
+
     while(*string)
     {
         
@@ -344,6 +347,10 @@ void ePaper::drawLine(int x0, int y0, int x1, int y1)
     //if(x0<0 || x1<0 || y0<0 || y1<0)return;
     
     //spi_on();
+    
+    init_io();
+    
+    
     int x = x1-x0;
     int y = y1-y0;
     int dx = abs(x), sx = x0<x1 ? 1 : -1;
@@ -366,6 +373,22 @@ void ePaper::drawLine(int x0, int y0, int x1, int y1)
     }
 }
 
+void ePaper::clear_sd()
+{
+    
+    init_io();
+    
+    for(int i=0; i<SIZE_WIDTH; i++)
+    {
+        for(int j=0; j<SIZE_LEN; j++)
+        {
+            drawPixel(j, i, 0);
+            
+        }
+    }
+}
+
+
 /*********************************************************************************************************
 ** Function name:           drawCircle
 ** Descriptions:            drawCircle
@@ -375,6 +398,8 @@ void ePaper::drawCircle(int poX, int poY, int r)
    // if(poX<0 || poY<0 || r<=0)return;
 
     //spi_on();
+    
+    init_io();
     int x = -r, y = 0, err = 2-2*r, e2;
     do {
         drawPixel(poX-x, poY+y, 1);

@@ -25,7 +25,7 @@
 #include <Arduino.h>
 
 #include "GT20L16_drive.h"
-
+#include "ePaper.h"
 
 static void spi_on()
 {
@@ -50,8 +50,18 @@ void GT20L16_drive::begin(int pinSelect)
 ** Function name:           getMatrixUnicode
 ** Descriptions:            get matrix, unicode
 *********************************************************************************************************/
+
+
 int GT20L16_drive::getMatrixUnicode(unsigned int uniCode, unsigned char *matrix)
 {
+
+    if(matrix == NULL)return 0;
+    
+    
+    
+    EPAPER.init_io();
+    begin();
+
     unsigned char i;
     unsigned char tempdata;
     unsigned long Add=0;
@@ -68,15 +78,17 @@ int GT20L16_drive::getMatrixUnicode(unsigned int uniCode, unsigned char *matrix)
         dtaLen = 32;
     }
 
-    Add=getAddrFromUnicode(uniCode);
     
+    Add=getAddrFromUnicode(uniCode);
+
     delayMicroseconds(10);
+    
+    
     GT_Select();
     SPI.transfer(0x03);
     SPI.transfer(Add>>16);
     SPI.transfer(Add>>8);
     SPI.transfer(Add);
-
 
     SPI.setBitOrder(LSBFIRST);
 
@@ -116,7 +128,7 @@ void GT20L16_drive::GT_UnSelect()
 *********************************************************************************************************/
 unsigned long GT20L16_drive::getAddrFromUnicode(unsigned int uniCode)
 {
-
+    
     if (uniCode <= 45632)   // char
     {
         unsigned int BaseAdd=0;

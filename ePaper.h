@@ -86,6 +86,11 @@ public:
         EPD.clear();
         end();
     } 
+    
+    void clear_sd();                         // clear sd card 
+
+    
+
    
     void spi_detach();
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -100,6 +105,7 @@ public:
     inline void drawPixel(unsigned char x, unsigned char y, unsigned char color)
     {
 		eSD.putPixel(x, y, color);
+        
 	}
     
     int drawChar(char c, int x, int y);

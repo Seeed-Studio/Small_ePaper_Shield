@@ -143,14 +143,9 @@ void EPD_Class::start() {
 
 	// wait for COG to become ready
 
-	//Serial.println("W");
-	//int lvc = 0;
 	while (HIGH == digitalRead(this->EPD_Pin_BUSY)) {
 	}
-	//Serial.println("O");
-	//Serial.print("lvc = ");
-	//Serial.println(lvc);
-	
+
 	// channel select
 	Delay_us(10);
 	SPI_send(this->EPD_Pin_EPD_CS, CU8(0x70, 0x01), 2);
@@ -343,6 +338,8 @@ void EPD_Class::end()
 	digitalWrite(this->EPD_Pin_DISCHARGE, HIGH);
 	Delay_ms(250);
 	digitalWrite(this->EPD_Pin_DISCHARGE, LOW);
+    
+    digitalWrite(EPD_Pin_EPD_CS, HIGH);
 
 }
 

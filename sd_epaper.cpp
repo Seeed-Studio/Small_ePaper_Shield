@@ -241,16 +241,21 @@ unsigned char sd_epaper::clear()
 {
     //spi_on();
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
+
     new_image.seek(0);
+
     memset(lineDta, 0x00, LINE_BYTE);
+    
 
     for(int i=0; i<SIZE_WIDTH; i++)
     {
         new_image.write(lineDta, LINE_BYTE);
     }
+
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
     memset(sram_image, 0x00, 5808);
 #endif
+
 }
 
 sd_epaper eSD;
