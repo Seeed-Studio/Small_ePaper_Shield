@@ -813,7 +813,7 @@ static void SPI_on() {
     SPI.begin();
     //SPI.setBitOrder(MSBFIRST);
     //SPI.setDataMode(SPI_MODE2);
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPI_put(0x00);
     SPI_put(0x00);
     Delay_us(10);

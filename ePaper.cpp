@@ -30,7 +30,7 @@
 static void spi_on()
 {
     SPI.begin();
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI.setClockDivider(SPI_CLOCK_DIV2);
     //SPI_put(0x00);
     //SPI_put(0x00);
 }
@@ -128,6 +128,7 @@ void ePaper::init_io()
     pinMode(Pin_BORDER, OUTPUT);
     pinMode(Pin_EPD_CS, OUTPUT);
     pinMode(Pin_SD_CS, OUTPUT);
+    
     pinMode(9, OUTPUT);
     digitalWrite(9, HIGH);
 
@@ -142,7 +143,7 @@ void ePaper::init_io()
     SPI.begin();
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI.setClockDivider(SPI_CLOCK_DIV2);
 }
 
 /*********************************************************************************************************

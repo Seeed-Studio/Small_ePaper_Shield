@@ -41,6 +41,7 @@ typedef enum {
 #define Pin_PWM           5
 #define Pin_RESET         6
 #define Pin_BUSY          7
+
 #define Pin_EPD_CS        10
 
 #define Pin_SD_CS         4

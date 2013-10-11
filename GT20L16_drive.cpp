@@ -30,7 +30,7 @@
 static void spi_on()
 {
     SPI.begin();
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI.setClockDivider(SPI_CLOCK_DIV2);
     //SPI_put(0x00);
     //SPI_put(0x00);
 }
@@ -80,17 +80,14 @@ int GT20L16_drive::getMatrixUnicode(unsigned int uniCode, unsigned char *matrix)
 
     SPI.setBitOrder(LSBFIRST);
 
-
     for(i=0;i<dtaLen;i++)
     {
-
         tempdata=SPI.transfer(0x00);
-        matrix[i]=(tempdata);   /*save dot matrix data in matrixdata[i]*/
+        matrix[i]=(tempdata);                       /*save dot matrix data in matrixdata[i]*/
         delay(5);
     }
     SPI.setBitOrder(MSBFIRST);
     GT_UnSelect();
-    
     
     return dtaLen;
 }

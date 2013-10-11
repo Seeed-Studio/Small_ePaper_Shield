@@ -30,7 +30,7 @@
 static void spi_on()
 {
     SPI.begin();
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    //SPI.setClockDivider(SPI_CLOCK_DIV2);
     //SPI_put(0x00);
     //SPI_put(0x00);
 }
