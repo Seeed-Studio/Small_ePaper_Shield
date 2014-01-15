@@ -208,6 +208,44 @@ int ePaper::drawUnicode(unsigned int uniCode, int x, int y)
     return dtaLen/2;        // x +
 }
 
+int ePaper::drawUnicode(unsigned char *matrix, int x, int y)
+{
+    
+   // if(((x+16)>= DISP_LEN) || ((y+16) >= DISP_WIDTH) || x<0 || y<0) return 0;
+   
+
+    int dtaLen  = 32;
+    int pX      = 0;
+    int pY      = 0;
+    int color   = 0;
+    //spi_on();
+    for(int k = 0; k<2; k++)
+    {
+        for(int i=0; i<8; i++)
+        {
+            for(int j=0; j<(dtaLen/2); j++)
+            {
+
+                if(matrix[j+(dtaLen/2)*k] & (0x01<<(7-i)))
+                {  
+                    color = 1;
+                }
+                else
+                {
+                    color = 0;
+                }
+                
+                pX = x + j;
+                pY = y + k*8+i;
+                
+                drawPixel(pX, pY, color);
+            }
+        }
+    }
+
+    return dtaLen/2;        // x +
+}
+
 /*********************************************************************************************************
 ** Function name:           drawUnicodeString
 ** Descriptions:            draw string
