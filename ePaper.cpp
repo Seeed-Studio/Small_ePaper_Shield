@@ -415,9 +415,9 @@ void ePaper::clear_sd()
     
     init_io();
     
-    for(int i=0; i<SIZE_WIDTH; i++)
+    for(int i=0; i<DISP_WIDTH; i++)
     {
-        for(int j=0; j<SIZE_LEN; j++)
+        for(int j=0; j<DISP_LEN; j++)
         {
             drawPixel(j, i, 0);
             
