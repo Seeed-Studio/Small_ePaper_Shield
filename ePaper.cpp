@@ -68,6 +68,9 @@ void ePaper::begin(EPD_size sz)
         while(1);                   // die here
     }
     
+    DISP_LEN    = SIZE_LEN;
+    DISP_WIDTH  = SIZE_WIDTH;
+    
     EPD.begin(size);
     init_io();
 }
