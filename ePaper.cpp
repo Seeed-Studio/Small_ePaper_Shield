@@ -250,6 +250,96 @@ int ePaper::drawUnicode(unsigned char *matrix, int x, int y)
 }
 
 /*********************************************************************************************************
+** Function name:           drawUnicodeBig
+** Descriptions:            draw a unicode with double size
+*********************************************************************************************************/
+int ePaper::drawUnicodeBig(unsigned int uniCode, int x, int y)
+{
+    
+   // if(((x+16)>= DISP_LEN) || ((y+16) >= DISP_WIDTH) || x<0 || y<0) return 0;
+   
+
+    int dtaLen = GT20L16.getMatrixUnicode(uniCode, tMatrix);
+
+
+    int pX      = 0;
+    int pY      = 0;
+    int color   = 0;
+    //spi_on();
+    for(int k = 0; k<2; k++)
+    {
+        for(int i=0; i<8; i++)
+        {
+            for(int j=0; j<(dtaLen/2); j++)
+            {
+
+                if(tMatrix[j+(dtaLen/2)*k] & (0x01<<(7-i)))
+                {  
+                    color = 1;
+                }
+                else
+                {
+                    color = 0;
+                }
+                
+                pX = x + j*2;
+                pY = y + k*8*2+i*2;
+                
+                
+                drawPixel(pX, pY, color);
+                drawPixel(pX, pY+1, color);
+                drawPixel(pX+1, pY, color);
+                drawPixel(pX+1, pY+1, color);
+            }
+        }
+    }
+
+    return dtaLen;        // x +
+}
+
+int ePaper::drawUnicodeBig(unsigned char *matrix, int x, int y)
+{
+    
+   // if(((x+16)>= DISP_LEN) || ((y+16) >= DISP_WIDTH) || x<0 || y<0) return 0;
+   
+
+    int dtaLen  = 32;
+    int pX      = 0;
+    int pY      = 0;
+    int color   = 0;
+    //spi_on();
+    for(int k = 0; k<2; k++)
+    {
+        for(int i=0; i<8; i++)
+        {
+            for(int j=0; j<(dtaLen/2); j++)
+            {
+
+                if(matrix[j+(dtaLen/2)*k] & (0x01<<(7-i)))
+                {  
+                    color = 1;
+                }
+                else
+                {
+                    color = 0;
+                }
+                
+                pX = x + j*2;
+                pY = y + k*8*2+i*2;
+                
+                
+                drawPixel(pX, pY, color);
+                drawPixel(pX, pY+1, color);
+                drawPixel(pX+1, pY, color);
+                drawPixel(pX+1, pY+1, color);
+            }
+        }
+    }
+
+    return dtaLen;        // x +
+}
+
+/*********************************************************************************************************
 ** Function name:           drawUnicodeString
 ** Descriptions:            draw string
 *********************************************************************************************************/
@@ -268,12 +358,39 @@ int ePaper::drawUnicodeString(unsigned int *uniCode, int len, int x, int y)
 }
 
 /*********************************************************************************************************
+** Function name:           drawUnicodeStringBig
+** Descriptions:            draw string Big
+*********************************************************************************************************/
+int ePaper::drawUnicodeStringBig(unsigned int *uniCode, int len, int x, int y)
+{
+    int xPlus = 0;
+    int xSum  = 0;
+    
+    for(int i=0; i<len; i++)
+    {
+        xPlus = drawUnicodeBig(uniCode[i], x, y);
+        x += xPlus;
+        xSum += xPlus;
+    }
+    return xSum;
+}
+
+/*********************************************************************************************************
 ** Function name:           drawChar
 ** Descriptions:            draw char
 *********************************************************************************************************/
 int ePaper::drawChar(char c, int x, int y)
 {
     return drawUnicode(c, x, y);
+}
+
+/*********************************************************************************************************
+** Function name:           drawCharBig
+** Descriptions:            draw char big
+*********************************************************************************************************/
+int ePaper::drawCharBig(char c, int x, int y)
+{
+    return drawUnicodeBig(c, x, y);
 }
 
 /*********************************************************************************************************
@@ -301,6 +418,30 @@ int ePaper::drawString(char *string, int poX, int poY)
 }
 
 /*********************************************************************************************************
+** Function name:           drawStringBig
+** Descriptions:            draw string big
+*********************************************************************************************************/
+int ePaper::drawStringBig(char *string, int poX, int poY)
+{
+    int sumX = 0;
+
+    while(*string)
+    {
+        
+        int xPlus = drawCharBig(*string, poX, poY);
+        sumX += xPlus;
+        *string++;
+        
+        if(poX < 200)
+        {
+            poX += xPlus;                                     /* Move cursor right            */
+        }
+    }
+    
+    return sumX;
+}
+
+/*********************************************************************************************************
 ** Function name:           drawNumber
 ** Descriptions:            drawNumber
 *********************************************************************************************************/
@@ -309,6 +450,18 @@ int ePaper::drawNumber(long long_num,int poX, int poY)
     char tmp[10];
     sprintf(tmp, "%d", long_num);
     return drawString(tmp, poX, poY);
+
+}
+
+/*********************************************************************************************************
+** Function name:           drawNumberBig
+** Descriptions:            drawNumberBig
+*********************************************************************************************************/
+int ePaper::drawNumberBig(long long_num,int poX, int poY)
+{
+    char tmp[10];
+    sprintf(tmp, "%d", long_num);
+    return drawStringBig(tmp, poX, poY);
 
 }
 
