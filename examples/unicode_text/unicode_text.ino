@@ -18,7 +18,7 @@
 #include "GT20L16_drive.h"
 
 
-#define SCREEN_SIZE 200                 // choose screen size: 144, 200, 270
+#define SCREEN_SIZE 270                 // choose screen size: 144, 200, 270
 
 #if (SCREEN_SIZE == 144)
 #define EPD_SIZE    EPD_1_44
@@ -46,9 +46,11 @@ void setup()
     GT20L16.begin();
 
     EPAPER.drawString("SeeedStudio", 10, 10);
-    EPAPER.drawUnicodeString(uniCode, 5, 30, 40);
+    EPAPER.drawStringBig("SeeedStudio", 10, 30);
 
-    EPAPER.display();                                   // use only once
+    EPAPER.drawUnicodeString(uniCode, 5, 30, 80);
+    EPAPER.drawUnicodeStringBig(uniCode, 5, 30, 100);
+    EPAPER.display();                                   
 
 }
 
