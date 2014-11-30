@@ -46,7 +46,7 @@ void setup()
     GT20L16.begin();
 
     EPAPER.drawString("SeeedStudio", 10, 10);
-    EPAPER.deawUnicodeString(uniCode, 5, 30, 40);
+    EPAPER.drawUnicodeString(uniCode, 5, 30, 40);
 
     EPAPER.display();                                   // use only once
 
