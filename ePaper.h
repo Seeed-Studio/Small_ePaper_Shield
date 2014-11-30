@@ -33,6 +33,8 @@
 
 #define EP_DEBUG            1
 
+#define clearDisplay()  clear_sd()
+
 #if EP_DEBUG
 #define print_ep(X)         Serial.print(X)
 #define println_ep(X)       Serial.println(X)
