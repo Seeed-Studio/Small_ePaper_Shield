@@ -33,6 +33,8 @@
 
 #define EP_DEBUG            1
 
+#define clearDisplay()  clear_sd()
+
 #if EP_DEBUG
 #define print_ep(X)         Serial.print(X)
 #define println_ep(X)       Serial.println(X)
@@ -46,7 +48,7 @@ class ePaper
 
 private:
 
-    int getTemperature();                   // get temperature
+    
     unsigned char tMatrix[32];
     
     int SIZE_LEN;
@@ -60,6 +62,8 @@ private:
 public:
 
     EPD_size size;
+    
+    int getTemperature();                   // get temperature
     
     void begin(EPD_size sz);
     
@@ -117,6 +121,16 @@ public:
     int drawUnicode(unsigned char *matrix, int x, int y);
     
     int drawUnicodeString(unsigned int *uniCode, int len, int x, int y);
+    
+    int drawCharBig(char c, int x, int y);
+    int drawStringBig(char *string, int poX, int poY);
+    int drawNumberBig(long long_num,int poX, int poY);
+    //int drawFloatBig(float floatNumber,int decimal,int poX, int poY);
+    
+    int drawUnicodeBig(unsigned int uniCode, int x, int y);
+    int drawUnicodeBig(unsigned char *matrix, int x, int y);
+    
+    int drawUnicodeStringBig(unsigned int *uniCode, int len, int x, int y);
     
     void drawLine(int x0, int y0, int x1, int y1);
     void drawCircle(int poX, int poY, int r);
