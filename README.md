@@ -1,7 +1,9 @@
 Small e-Paper Shield
 ---------------------------------------------------------
 
-[![Small e-Paper Shield](http://www.seeedstudio.com/depot/images/product/e%20shield_04.jpg)](http://www.seeedstudio.com/depot/small-epaper-shield-p-1597.html?cPath=34_82)
+<img src=https://statics3.seeedstudio.com/product/104030019%201_02.jpg width=400><img src=https://statics3.seeedstudio.com/product/104030019%201_01.jpg width=400>
+
+[Small e-paper Shield V2](https://www.seeedstudio.com/s/Small-e-paper-Shield-V2-p-2462.html)
 
 # Background
 e-paper might be the most comfortable material to read. It reflects light instead of emits light to mimic the experience of conventional paper reading. And in this way much less power is consumed. Small e-paper shield is a driver shield for e-paper of small sizes. It's capable of driving e-papers of 1.44 inch, 2.0 inch and 2.7 inch and supports more than 170 languages. The upper surface of this shield is left flat and clean to give great support to the e-paper attached to it. If you are considering a lightweight and comfortable to read display, e-paper would be a good choice.
@@ -153,7 +155,7 @@ The function can be used to draw a triangle. It is formed by three points.
 This function clears the display. An alias for ```clear_sd()``` which appears to actually clear the display unlike the existing ```clear()``` function. Call this function in between calls to ```display()``` to show different images or "pages" on the display. 
 
 
-For more information, please refer to [wiki page](http://www.seeedstudio.com/wiki/Small_e-Paper_Shield).
+For more information, please refer to [wiki page](http://wiki.seeedstudio.com/Small_e-Paper_Shield_V2/).
 
     
 ----
