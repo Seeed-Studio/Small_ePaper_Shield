@@ -1,7 +1,7 @@
 Small e-Paper Shield
 ---------------------------------------------------------
 
-<img src=https://statics3.seeedstudio.com/product/104030019%201_02.jpg width=400><img src=https://statics3.seeedstudio.com/product/104030019%201_01.jpg width=400>
+![](https://github.com/SeeedDocument/Small_e-Paper_Shield_V2/raw/master/img/Small_e-Paper_shield_b.jpg)
 
 [Small e-paper Shield V2](https://www.seeedstudio.com/s/Small-e-paper-Shield-V2-p-2462.html)
 
