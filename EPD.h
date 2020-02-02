@@ -19,14 +19,14 @@
 #include <SPI.h>
 
 #if defined(__MSP430_CPU__)
-#define PROGMEM
+    #define PROGMEM
 #else
-#include <avr/pgmspace.h>
+    #include <avr/pgmspace.h>
 #endif
 
 // if more SRAM available (8 kBytes)
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#define EPD_ENABLE_EXTRA_SRAM 1
+    #define EPD_ENABLE_EXTRA_SRAM 1
 #endif
 
 typedef enum {
@@ -42,11 +42,10 @@ typedef enum {           // Image pixel -> Display pixel
     EPD_normal       // B -> B, W -> W (New Image)
 } EPD_stage;
 
-typedef void EPD_reader(void *buffer, uint32_t address, uint16_t length);
+typedef void EPD_reader(void* buffer, uint32_t address, uint16_t length);
 
-class EPD_Class
-{
-    private:
+class EPD_Class {
+  private:
 
     int EPD_Pin_EPD_CS;
     int EPD_Pin_PANEL_ON;
@@ -64,17 +63,17 @@ class EPD_Class
     uint16_t dots_per_line;
     uint16_t bytes_per_line;
     uint16_t bytes_per_scan;
-    PROGMEM const uint8_t *gate_source;
+    PROGMEM const uint8_t* gate_source;
     uint16_t gate_source_length;
-    PROGMEM const uint8_t *channel_select;
+    PROGMEM const uint8_t* channel_select;
     uint16_t channel_select_length;
 
     bool filler;
 
-    public:
+  public:
     unsigned char lineDta[33];
 
-    public:
+  public:
     // power up and power down the EPD panel
     void begin(EPD_size sz);
     void start();
@@ -85,8 +84,7 @@ class EPD_Class
     }
 
     // clear display (anything -> white)
-    void clear()
-    {
+    void clear() {
         this->frame_fixed_repeat(0xff, EPD_compensate);
         this->frame_fixed_repeat(0xff, EPD_white);
         this->frame_fixed_repeat(0xaa, EPD_inverse);
@@ -94,79 +92,75 @@ class EPD_Class
     }
 
     // assuming a clear (white) screen output an image (PROGMEM data)
-    void image(PROGMEM const uint8_t *image)
-    {
+    void image(PROGMEM const uint8_t* image) {
         this->frame_fixed_repeat(0xaa, EPD_compensate);
         this->frame_fixed_repeat(0xaa, EPD_white);
         this->frame_data_repeat(image, EPD_inverse);
         this->frame_data_repeat(image, EPD_normal);
     }
 
-#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
-    void image_sd()
-    {
+    #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
+    void image_sd() {
         this->frame_fixed_repeat(0xaa, EPD_compensate);
         this->frame_fixed_repeat(0xaa, EPD_white);
         this->frame_data_repeat_sd(EPD_inverse);
         this->frame_data_repeat_sd(EPD_normal);
     }
-#endif
+    #endif
     // change from old image to new image (PROGMEM data)
-    void image(PROGMEM const uint8_t *old_image, PROGMEM const uint8_t *new_image)
-    {
+    void image(PROGMEM const uint8_t* old_image, PROGMEM const uint8_t* new_image) {
         this->frame_data_repeat(old_image, EPD_compensate);
         this->frame_data_repeat(old_image, EPD_white);
         this->frame_data_repeat(new_image, EPD_inverse);
         this->frame_data_repeat(new_image, EPD_normal);
     }
 
-#if defined(EPD_ENABLE_EXTRA_SRAM)
+    #if defined(EPD_ENABLE_EXTRA_SRAM)
     // change from old image to new image (SRAM version)
-    void image_sram(unsigned char *new_image) 
-    {
+    void image_sram(unsigned char* new_image) {
         this->frame_fixed_repeat(0xaa, EPD_compensate);
         this->frame_fixed_repeat(0xaa, EPD_white);
         this->frame_sram_repeat(new_image, EPD_inverse);
         this->frame_sram_repeat(new_image, EPD_normal);
     }
-#endif
+    #endif
 
     // Low level API calls
     // ===================
 
     // single frame refresh
     void frame_fixed(uint8_t fixed_value, EPD_stage stage);
-    void frame_data(PROGMEM const uint8_t *new_image, EPD_stage stage);
-#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
+    void frame_data(PROGMEM const uint8_t* new_image, EPD_stage stage);
+    #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     void frame_data_sd(EPD_stage stage);
-#endif
+    #endif
 
-#if defined(EPD_ENABLE_EXTRA_SRAM)
-    void frame_sram(const uint8_t *new_image, EPD_stage stage);
-#endif
-    void frame_cb(uint32_t address, EPD_reader *reader, EPD_stage stage);
+    #if defined(EPD_ENABLE_EXTRA_SRAM)
+    void frame_sram(const uint8_t* new_image, EPD_stage stage);
+    #endif
+    void frame_cb(uint32_t address, EPD_reader* reader, EPD_stage stage);
 
     // stage_time frame refresh
     void frame_fixed_repeat(uint8_t fixed_value, EPD_stage stage);
-    void frame_data_repeat(PROGMEM const uint8_t *new_image, EPD_stage stage);
-#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
+    void frame_data_repeat(PROGMEM const uint8_t* new_image, EPD_stage stage);
+    #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
     void frame_data_repeat_sd(EPD_stage stage);
-#endif
+    #endif
 
-#if defined(EPD_ENABLE_EXTRA_SRAM)
-    void frame_sram_repeat(const uint8_t *new_image, EPD_stage stage);
-#endif
-    void frame_cb_repeat(uint32_t address, EPD_reader *reader, EPD_stage stage);
+    #if defined(EPD_ENABLE_EXTRA_SRAM)
+    void frame_sram_repeat(const uint8_t* new_image, EPD_stage stage);
+    #endif
+    void frame_cb_repeat(uint32_t address, EPD_reader* reader, EPD_stage stage);
 
     // convert temperature to compensation factor
     int temperature_to_factor_10x(int temperature);
 
     // single line display - very low-level
     // also has to handle AVR progmem
-    void line(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage);
-#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
-    void line_sd(uint16_t line, const uint8_t *data, uint8_t fixed_value, bool read_progmem, EPD_stage stage);
-#endif
+    void line(uint16_t line, const uint8_t* data, uint8_t fixed_value, bool read_progmem, EPD_stage stage);
+    #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega328P__)
+    void line_sd(uint16_t line, const uint8_t* data, uint8_t fixed_value, bool read_progmem, EPD_stage stage);
+    #endif
 };
 
 extern EPD_Class EPD;
