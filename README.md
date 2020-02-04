@@ -1,4 +1,4 @@
-Small e-Paper Shield
+Small e-Paper Shield  [![Build Status](https://travis-ci.com/Seeed-Studio/Small_ePaper_Shield.svg?branch=master)](https://travis-ci.com/Seeed-Studio/Small_ePaper_Shield)
 ---------------------------------------------------------
 
 ![](https://github.com/SeeedDocument/Small_e-Paper_Shield_V2/raw/master/img/Small_e-Paper_shield_b.jpg)
