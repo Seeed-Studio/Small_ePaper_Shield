@@ -134,7 +134,7 @@ class ePaper {
     void drawRectangle(int poX, int poY, int len, int width);
     void fillRectangle(int poX, int poY, int len, int width);
     void fillCircle(int poX, int poY, int r);
-    void drawTraingle(int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
+    void drawTriangle(int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
 };
 
 extern ePaper EPAPER;

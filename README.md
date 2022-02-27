@@ -145,7 +145,7 @@ Example:<pre>
     EPAPER.drawVerticalLine(150, 20, 60);</pre>
 
 
-### 16. void drawTraingle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
+### 16. void drawTriangle( int poX1, int poY1, int poX2, int poY2, int poX3, int poY3);
 The function can be used to draw a triangle. It is formed by three points.
 
 * poX1(poX2,poX3): the X-coordinate of the triangle one point.

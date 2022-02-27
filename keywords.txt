@@ -44,7 +44,7 @@ drawVerticalLine	KEYWORD2
 drawRectangle	KEYWORD2
 fillRectangle	KEYWORD2
 fillCircle	KEYWORD2
-drawTraingle	KEYWORD2
+drawTriangle	KEYWORD2
 
 #######################################
 #	Constants	(LITERAL1)

@@ -598,18 +598,18 @@ void ePaper::fillCircle(int poX, int poY, int r) {
 }
 
 /*********************************************************************************************************
-** Function name:           drawTraingle
-** Descriptions:            drawTraingle
+** Function name:           drawTriangle
+** Descriptions:            drawTriangle
 *********************************************************************************************************/
-void ePaper::drawTraingle(int poX1, int poY1, int poX2, int poY2, int poX3, int poY3) {
+void ePaper::drawTriangle(int poX1, int poY1, int poX2, int poY2, int poX3, int poY3) {
     drawLine(poX1, poY1, poX2, poY2);
     drawLine(poX1, poY1, poX3, poY3);
     drawLine(poX2, poY2, poX3, poY3);
 }
 
 /*********************************************************************************************************
-** Function name:           drawTraingle
-** Descriptions:            drawTraingle
+** Function name:           drawTriangle
+** Descriptions:            drawTriangle
 *********************************************************************************************************/
 void ePaper::fillRectangle(int poX, int poY, int len, int width) {
     for (int i = 0; i < width; i++) {
